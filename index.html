@@ -3,1258 +3,928 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Roca Lights — El espectáculo del anochecer</title>
+<title>ROCALIGHTS 2027 · Propuesta Mercado Pago</title>
 <link rel="icon" href="https://i.imgur.com/STRghPA.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --sand:#F2C27B;
-  --orange:#FF7A59;
-  --pink:#FF5E7D;
-  --lila:#B56BA8;
-  --purple:#6B4C9A;
-  --navy:#1D224B;
-  --cream:#F2EFEA;
-  --bg:#0B0E24;
-  --muted:rgba(242,239,234,.62);
-  --line:rgba(242,239,234,.12);
-  --grad:linear-gradient(90deg,var(--sand),var(--orange),var(--pink),var(--lila));
+  --sand:#F2C27B; --orange:#FF7A59; --pink:#FF5E7D; --lila:#B56BA8; --lila2:#d9a3cf;
+  --purple:#6B4C9A; --navy:#1D224B; --cream:#F2EFEA; --bg:#0B0E24;
+  --muted:rgba(242,239,234,.62); --line:rgba(242,239,234,.12);
+  --grad:linear-gradient(90deg,#F2C27B,#FF7A59,#FF5E7D,#B56BA8);
+  --mp:#00A6E0;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden}
-body{
-  background:var(--bg);
-  color:var(--cream);
-  font-family:'Inter',sans-serif;
-  font-size:16px;
-  line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-}
+html,body{height:100%;overflow:hidden;background:#04050d}
+body{font-family:'Inter',sans-serif;color:var(--cream);-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
 ::selection{background:var(--pink);color:var(--bg)}
-img{max-width:100%;display:block}
 
-/* ================= deck ================= */
-#deck{
-  display:flex;height:100vh;width:100vw;
-  overflow-x:auto;overflow-y:hidden;
-  scroll-snap-type:x mandatory;
-  scroll-behavior:smooth;
-  scrollbar-width:none;
-}
-#deck::-webkit-scrollbar{display:none}
-.slide{
-  flex:0 0 100vw;height:100vh;
-  scroll-snap-align:start;
-  position:relative;
-  display:flex;align-items:center;justify-content:center;
-  padding:6vh 7vw;
-  overflow:hidden;
-}
-.inner{width:100%;max-width:1180px;position:relative;z-index:2}
+/* ============ ESCENARIO 16:9 FIJO ============ */
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(60% 60% at 50% 50%,#0a0c1e,#04050d)}
+#stage{width:1920px;height:1080px;position:relative;overflow:hidden;flex:0 0 auto;
+  transform-origin:center center;background:var(--bg);
+  box-shadow:0 60px 160px -40px rgba(0,0,0,.9)}
+#track{display:flex;width:100%;height:100%;
+  transition:transform .75s cubic-bezier(.65,.02,.15,1)}
+.slide{flex:0 0 1920px;width:1920px;height:1080px;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;padding:86px 110px}
+.slide>*{position:relative;z-index:2}
+.slide .bgel{z-index:0}
+.slide .shade{z-index:1}
 
-.slide[data-num]::after{
-  content:attr(data-num);
-  position:absolute;top:4vh;right:5vw;z-index:1;
-  font-size:clamp(80px,10vw,150px);font-weight:800;line-height:1;
-  color:transparent;-webkit-text-stroke:1px rgba(242,239,234,.10);
-  pointer-events:none;
-}
-.slide.light[data-num]::after{-webkit-text-stroke:1px rgba(29,34,75,.14)}
-
-.tintO{background:radial-gradient(90% 100% at 15% 100%,rgba(255,122,89,.10),transparent 60%),var(--bg)}
-.tintP{background:radial-gradient(90% 100% at 85% 0%,rgba(107,76,154,.20),transparent 60%),var(--bg)}
-.tintK{background:radial-gradient(80% 110% at 80% 100%,rgba(255,94,125,.10),transparent 55%),var(--bg)}
+/* fondos */
+.tintO{background:radial-gradient(90% 100% at 12% 100%,rgba(255,122,89,.12),transparent 60%),var(--bg)}
+.tintP{background:radial-gradient(90% 100% at 88% 0%,rgba(107,76,154,.22),transparent 60%),var(--bg)}
+.tintK{background:radial-gradient(80% 110% at 82% 100%,rgba(255,94,125,.12),transparent 55%),var(--bg)}
 .deep{background:linear-gradient(140deg,#151a40 0%,#0B0E24 55%,#1b1038 100%)}
+.sunset{background:linear-gradient(150deg,#1b1038 0%,#3a2264 38%,#6B4C9A 68%,#a4527f 100%)}
+.plain{background:var(--bg)}
 .light{background:var(--cream);color:var(--navy)}
-.light p{color:rgba(29,34,75,.72)}
+.light p{color:rgba(29,34,75,.7)}
+.light h2{color:var(--navy)}
 .light .eyebrow{color:var(--orange)}
 .light .eyebrow::before{background:var(--orange)}
-.light h2{color:var(--navy)}
+.light .ghost{-webkit-text-stroke:1px rgba(29,34,75,.14)}
 
-/* ================= type ================= */
-.eyebrow{
-  font-size:13px;font-weight:500;letter-spacing:.04em;
-  color:var(--sand);margin-bottom:18px;display:flex;align-items:center;gap:12px;
-}
-.eyebrow::before{content:"";width:28px;height:1px;background:var(--sand);opacity:.7}
-h2{font-size:clamp(28px,3.6vw,48px);font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-bottom:22px}
-h2 em,.gradtxt{
-  font-style:normal;
-  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
-}
-h3{font-size:17px;font-weight:600;margin-bottom:8px}
-p{color:var(--muted)}
-.lead{font-size:clamp(16px,1.5vw,19px);max-width:640px;font-weight:300}
-.lead strong{color:var(--cream);font-weight:500}
-.light .lead strong{color:var(--navy)}
+/* número fantasma */
+.ghost{position:absolute;top:52px;right:84px;z-index:1;pointer-events:none;
+  font-size:150px;font-weight:800;line-height:1;color:transparent;
+  -webkit-text-stroke:1px rgba(242,239,234,.10)}
+.bigword{position:absolute;bottom:16px;left:70px;z-index:0;pointer-events:none;
+  font-size:200px;font-weight:800;line-height:1;letter-spacing:-.04em;
+  color:transparent;-webkit-text-stroke:1px rgba(242,239,234,.07)}
 
-.statement{font-size:clamp(36px,5.4vw,78px);font-weight:800;letter-spacing:-.03em;line-height:1.06}
+/* ============ TIPOGRAFÍA ============ */
+.eyebrow{font-size:23px;font-weight:500;letter-spacing:.05em;color:var(--sand);
+  display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.eyebrow::before{content:"";width:40px;height:1px;background:var(--sand);opacity:.75}
+h2{font-size:62px;font-weight:700;letter-spacing:-.02em;line-height:1.1;margin-bottom:18px}
+h3{font-size:27px;font-weight:600;line-height:1.25}
+.grad,h2 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.statement{font-size:88px;font-weight:800;letter-spacing:-.03em;line-height:1.05}
 .statement .thin{font-weight:200}
+.lead{font-size:30px;font-weight:300;line-height:1.45;color:rgba(242,239,234,.72);max-width:1050px;text-wrap:pretty}
+.lead strong{color:var(--cream);font-weight:500}
+.sub{font-size:32px;font-weight:300;color:rgba(242,239,234,.68);margin-bottom:8px}
+p.body{font-size:23px;font-weight:300;line-height:1.5;color:rgba(242,239,234,.64)}
+.tiny{font-size:20px;font-weight:300;color:rgba(242,239,234,.42)}
+.kicker{font-size:33px;font-weight:500;line-height:1.35}
 
-.rotline{margin-top:30px;font-size:clamp(17px,1.8vw,22px);font-weight:300;color:var(--muted)}
-#rota{color:var(--sand);font-weight:600;display:inline-block;transition:opacity .4s ease,transform .4s ease}
-.chips{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
-.chips span{font-size:12px;font-weight:500;border:1px solid var(--line);border-radius:999px;padding:7px 16px;color:var(--muted)}
-.chips .hot{border-color:rgba(242,194,123,.5);color:var(--sand)}
+/* ============ CHIPS ============ */
+.chips{display:flex;gap:14px;flex-wrap:wrap}
+.chips span{font-size:22px;font-weight:500;border:1px solid var(--line);border-radius:999px;
+  padding:11px 24px;color:rgba(242,239,234,.75)}
+.bchips{display:flex;gap:16px;flex-wrap:wrap}
+.bchip{display:flex;align-items:center;gap:14px;padding:11px 28px 11px 12px;border-radius:999px;
+  font-size:23px;font-weight:600;border:1px solid}
+.bchip .bic{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.bc1{border-color:rgba(242,194,123,.55);color:var(--sand)}.bc1 .bic{background:rgba(242,194,123,.16)}
+.bc2{border-color:rgba(255,122,89,.55);color:var(--orange)}.bc2 .bic{background:rgba(255,122,89,.16)}
+.bc3{border-color:rgba(255,94,125,.55);color:var(--pink)}.bc3 .bic{background:rgba(255,94,125,.16)}
+.bc4{border-color:rgba(181,107,168,.6);color:var(--lila2)}.bc4 .bic{background:rgba(181,107,168,.18)}
+.bc5{border-color:rgba(242,239,234,.3);color:rgba(242,239,234,.85)}.bc5 .bic{background:rgba(242,239,234,.12)}
 
-/* ================= helpers ================= */
-.cols{display:grid;gap:48px;align-items:center}
+/* ============ GRILLAS ============ */
+.cols{display:grid;gap:70px;align-items:center}
 .c2{grid-template-columns:1.05fr .95fr}
-.row{display:grid;gap:28px;margin-top:44px}
-.r3{grid-template-columns:repeat(3,1fr)}
-.r4{grid-template-columns:repeat(4,1fr)}
-.item{border-top:1px solid var(--line);padding-top:18px}
-.light .item{border-top-color:rgba(29,34,75,.15)}
-.item .dot{width:8px;height:8px;border-radius:50%;margin-bottom:14px}
-.item p{font-size:14px;font-weight:300}
-.d1{background:var(--sand)}.d2{background:var(--orange)}.d3{background:var(--pink)}.d4{background:var(--lila)}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:48px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:40px}
+.item{border-top:1px solid var(--line);padding-top:24px}
+.item h3{margin-bottom:10px}
+.item p{font-size:22px;font-weight:300;line-height:1.45;color:rgba(242,239,234,.62)}
 
-.imgframe{border-radius:14px;overflow:hidden;box-shadow:0 30px 80px -30px rgba(0,0,0,.8);position:relative}
-.imgframe img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease}
+/* tarjetas con ícono */
+.card{border:1px solid var(--line);border-radius:22px;padding:30px 30px 28px;
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.012));
+  transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease}
+.card:hover{transform:translateY(-6px)}
+.icobox{width:70px;height:70px;border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:22px}
+.k1 .icobox{background:rgba(242,194,123,.12);border:1px solid rgba(242,194,123,.4)}
+.k2 .icobox{background:rgba(255,122,89,.12);border:1px solid rgba(255,122,89,.4)}
+.k3 .icobox{background:rgba(255,94,125,.12);border:1px solid rgba(255,94,125,.4)}
+.k4 .icobox{background:rgba(181,107,168,.14);border:1px solid rgba(181,107,168,.45)}
+.k5 .icobox{background:rgba(107,76,154,.18);border:1px solid rgba(107,76,154,.5)}
+.k6 .icobox{background:rgba(242,239,234,.09);border:1px solid rgba(242,239,234,.28)}
+.k1:hover{border-color:rgba(242,194,123,.55);box-shadow:0 24px 60px -30px rgba(242,194,123,.6)}
+.k2:hover{border-color:rgba(255,122,89,.55);box-shadow:0 24px 60px -30px rgba(255,122,89,.6)}
+.k3:hover{border-color:rgba(255,94,125,.55);box-shadow:0 24px 60px -30px rgba(255,94,125,.6)}
+.k4:hover{border-color:rgba(181,107,168,.6);box-shadow:0 24px 60px -30px rgba(181,107,168,.6)}
+.k5:hover{border-color:rgba(107,76,154,.7)}
+.k6:hover{border-color:rgba(242,239,234,.4)}
+.card h3{margin-bottom:9px}
+.card p{font-size:21px;font-weight:300;line-height:1.45;color:rgba(242,239,234,.62)}
+.cnum{position:absolute;top:14px;right:22px;font-size:52px;font-weight:800;line-height:1;
+  color:transparent;-webkit-text-stroke:1px rgba(242,239,234,.16)}
+
+/* marco de imagen */
+.imgframe{border-radius:18px;overflow:hidden;position:relative;box-shadow:0 40px 90px -30px rgba(0,0,0,.9)}
+.imgframe img{width:100%;height:100%;object-fit:cover;transition:transform .9s ease}
 .imgframe:hover img{transform:scale(1.05)}
-.caption{font-size:12px;color:rgba(242,239,234,.4);margin-top:14px;font-weight:300}
-.chip{
-  position:absolute;bottom:14px;left:14px;z-index:2;
-  font-size:11px;font-weight:500;letter-spacing:.03em;
-  background:rgba(11,14,36,.75);backdrop-filter:blur(6px);
-  border:1px solid var(--line);border-radius:999px;padding:6px 14px;color:var(--cream);
-  display:flex;align-items:center;gap:8px;
-}
-.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--orange);
-  box-shadow:0 0 10px var(--orange);animation:blink 2s infinite}
+.chipimg{position:absolute;bottom:18px;left:18px;display:flex;align-items:center;gap:11px;
+  font-size:21px;font-weight:500;background:rgba(11,14,36,.78);border:1px solid var(--line);
+  border-radius:999px;padding:10px 20px;backdrop-filter:blur(6px)}
+.chipimg i{width:9px;height:9px;border-radius:50%;background:var(--orange);
+  box-shadow:0 0 12px var(--orange);animation:blink 2s infinite}
+.caption{font-size:20px;font-weight:300;color:rgba(242,239,234,.42);margin-top:16px}
+
+/* ============ ANIMACIONES ============ */
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-
-/* ================= entrance fx ================= */
-.fx{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
-.act .fx{opacity:1;transform:none}
-.act .fx:nth-child(2),.act .f2{transition-delay:.12s}
-.act .fx:nth-child(3),.act .f3{transition-delay:.24s}
-.act .fx:nth-child(4),.act .f4{transition-delay:.36s}
-.act .fx:nth-child(5),.act .f5{transition-delay:.48s}
-
-/* ================= cover ================= */
-#cover video{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;
-  filter:blur(9px) brightness(.92) saturate(1.05);
-  transform:scale(1.08);
-}
-#cover .shadecover{position:absolute;inset:0;z-index:1;background:radial-gradient(80% 90% at 50% 45%,rgba(11,14,36,.25),rgba(11,14,36,.85))}
-#cover .inner{display:flex;flex-direction:column;align-items:center;text-align:center}
-#cover .logo{width:min(400px,54vw)}
-#cover .sub{margin-top:26px;font-size:clamp(15px,1.6vw,20px);font-weight:300;color:rgba(242,239,234,.85)}
-.gline{width:120px;height:2px;background:var(--grad);border-radius:2px;margin:26px auto 0;
-  background-size:200% 100%;animation:gslide 4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-34}}
 @keyframes gslide{to{background-position:200% 0}}
-.minilogos{
-  position:absolute;bottom:5vh;left:0;right:0;z-index:2;
-  display:flex;justify-content:center;align-items:center;gap:40px;
-}
-.minilogos img{height:52px;object-fit:contain;opacity:.92}
-.minilogos .sep{width:1px;height:38px;background:var(--line)}
-
-/* side waves (slide 2) */
-.sidewaves{
-  position:absolute;right:-50px;top:50%;transform:translateY(-50%);
-  width:min(430px,32vw);z-index:1;opacity:.8;pointer-events:none;
-}
+@keyframes eq{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1.1)}}
+@keyframes ring{0%{transform:scale(.5);opacity:.9}100%{transform:scale(1.9);opacity:0}}
+@keyframes npulse{0%,100%{opacity:.9}50%{opacity:.4}}
+@keyframes halo{0%,100%{opacity:.15;transform:scale(.85)}50%{opacity:.6;transform:scale(1.1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.18)}24%{transform:scale(1)}36%{transform:scale(1.12)}}
+@keyframes glowpill{0%,100%{opacity:.55}50%{opacity:1}}
 .wave{stroke-dasharray:10 7;animation:dash 1.2s linear infinite}
 .w2{animation-duration:1.7s}.w3{animation-duration:2.3s}.w4{animation-duration:2.9s}.w5{animation-duration:3.5s}
-@keyframes dash{to{stroke-dashoffset:-34}}
-
-/* ================= pilares ================= */
-.pill4{display:grid;grid-template-columns:repeat(4,1fr);gap:34px;margin-top:52px}
-.pillar{border-top:1px solid var(--line);padding-top:22px}
-.pw{font-size:clamp(26px,3vw,42px);font-weight:800;letter-spacing:-.02em;display:block;margin-bottom:12px;line-height:1}
-.pillar p{font-size:13.5px;font-weight:300}
-.mkt{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:56px;padding-top:30px;border-top:1px solid var(--line)}
-.mkt>div{display:flex;gap:12px;align-items:flex-start}
-.mkt .mdot{width:8px;height:8px;border-radius:50%;margin-top:7px;flex:0 0 auto}
-.mkt b{color:var(--cream);font-weight:600;font-size:14px;display:block}
-.mkt span{font-size:12.5px;color:var(--muted);font-weight:300}
-
-/* ================= calendario ================= */
-.calwrap{max-width:560px;margin-left:auto;width:100%}
-.calhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px}
-.calhead b{font-size:24px;font-weight:700;letter-spacing:-.01em}
-.calhead span{font-size:12.5px;color:rgba(242,239,234,.45)}
-.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:9px}
-.cal .h{font-size:12px;color:rgba(242,239,234,.4);text-align:center;padding-bottom:8px;font-weight:600}
-.cal .d{
-  aspect-ratio:1;border-radius:13px;display:flex;align-items:center;justify-content:center;
-  font-size:15px;color:rgba(242,239,234,.38);border:1px solid rgba(242,239,234,.08);
-}
-.cal .wA{background:linear-gradient(140deg,var(--sand),var(--orange));color:var(--navy);font-weight:700;border:0;
-  box-shadow:0 8px 22px -8px rgba(255,122,89,.55)}
-.cal .wB{background:linear-gradient(140deg,var(--pink),var(--lila));color:#fff;font-weight:700;border:0;
-  box-shadow:0 8px 22px -8px rgba(255,94,125,.55)}
-.legend{margin-top:24px;display:flex;gap:26px;flex-wrap:wrap}
-.legend span{font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:10px;font-weight:400}
-.legend i{width:13px;height:13px;border-radius:4px;flex:0 0 auto}
-.legend .lA{background:linear-gradient(140deg,var(--sand),var(--orange))}
-.legend .lB{background:linear-gradient(140deg,var(--pink),var(--lila))}
-
-/* ================= recorrido ================= */
-.route{position:relative;margin-top:210px;height:150px}
-.rline{
-  position:absolute;top:21px;left:2%;right:2%;height:2px;background:var(--grad);
-  -webkit-mask:repeating-linear-gradient(90deg,#000 0 10px,transparent 10px 19px);
-  mask:repeating-linear-gradient(90deg,#000 0 10px,transparent 10px 19px);
-  animation:mflow 1.1s linear infinite;
-}
-@keyframes mflow{to{-webkit-mask-position:19px 0;mask-position:19px 0}}
-.pnode{position:absolute;top:0;transform:translateX(-50%);text-align:center;cursor:default}
-.pdot{width:14px;height:14px;border-radius:50%;margin:14px auto 14px;position:relative;transition:transform .3s ease}
-.pdot::before{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid currentColor;opacity:.6;animation:ring 2.6s ease-out infinite}
-@keyframes ring{0%{transform:scale(.5);opacity:.9}100%{transform:scale(1.9);opacity:0}}
-.pnode:hover .pdot{transform:scale(1.4)}
-.plbl{font-size:12px;color:rgba(242,239,234,.5);font-weight:400;white-space:nowrap;line-height:1.4}
-.plbl b{display:block;font-size:13.5px;color:var(--cream);font-weight:600}
-.pop{
-  position:absolute;bottom:calc(100% - 4px);left:50%;
-  transform:translate(-50%,10px) scale(.94);
-  width:min(250px,24vw);border-radius:14px;overflow:hidden;
-  opacity:0;pointer-events:none;
-  transition:opacity .35s ease,transform .35s ease;
-  border:1px solid var(--line);
-  box-shadow:0 26px 70px -18px rgba(0,0,0,.95);
-  z-index:6;background:var(--bg);
-}
-.pop img{width:100%;aspect-ratio:3/2;object-fit:cover}
-.pop span{display:block;font-size:11.5px;font-weight:500;color:var(--muted);padding:9px 14px}
-.pnode:hover .pop{opacity:1;transform:translate(-50%,-8px) scale(1)}
-.routehint{font-size:12px;color:rgba(242,239,234,.4);font-weight:300;margin-top:8px}
-.routehint i{font-style:normal;color:var(--sand)}
-
-/* ================= mapping infographic ================= */
-.mapviz{margin-top:40px}
-.mapviz svg{width:100%;height:auto;display:block;overflow:visible}
-.tw{animation:twk 3s ease-in-out infinite}
-.tw:nth-child(2n){animation-delay:1s}.tw:nth-child(3n){animation-delay:2s}
-@keyframes twk{0%,100%{opacity:.9}50%{opacity:.15}}
-.flow{stroke-dasharray:7 9;animation:dash 1.6s linear infinite}
-.node{animation:npulse 2.6s ease-in-out infinite}
-@keyframes npulse{0%,100%{opacity:.9}50%{opacity:.4}}
+.flow{stroke-dasharray:9 11;animation:dash 1.6s linear infinite}
 .ringx{transform-origin:center;transform-box:fill-box;animation:ring 2.6s ease-out infinite}
-
-/* ================= phones (videos 9:16) ================= */
-.phones{display:flex;gap:clamp(14px,2vw,30px);justify-content:center;align-items:center}
-.phone{
-  width:clamp(140px,13.5vw,185px);aspect-ratio:9/18.5;
-  border-radius:26px;border:1px solid rgba(242,239,234,.18);
-  padding:9px;background:#10143a;
-  box-shadow:0 34px 80px -26px rgba(0,0,0,.95);
-  flex:0 0 auto;
-}
-.phone video{width:100%;height:100%;object-fit:cover;border-radius:18px;display:block}
-.phone.ph1{transform:rotate(-4deg) translateY(14px)}
-.phone.ph2{transform:scale(1.1);z-index:2}
-.phone.ph3{transform:rotate(4deg) translateY(14px)}
-
-/* ================= renders evento ================= */
-.renders{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
-.renders .imgframe{aspect-ratio:16/11}
-
-/* ================= zona festival (rows) ================= */
-.zlist{margin-top:44px}
-.zrow{
-  display:grid;grid-template-columns:88px 240px 1fr;gap:26px;align-items:center;
-  padding:20px 0;border-top:1px solid var(--line);
-}
-.zrow:last-child{border-bottom:1px solid var(--line)}
-.zrow h3{margin:0;font-size:18px}
-.zrow p{font-size:14px;font-weight:300;margin:0}
-.zico{
-  width:64px;height:64px;border-radius:16px;
-  display:flex;align-items:center;justify-content:center;
-}
-.z1 .zico{background:rgba(242,194,123,.1);border:1px solid rgba(242,194,123,.35)}
-.z2 .zico{background:rgba(255,122,89,.1);border:1px solid rgba(255,122,89,.35)}
-.z3 .zico{background:rgba(255,94,125,.1);border:1px solid rgba(255,94,125,.35)}
-.z4 .zico{background:rgba(181,107,168,.12);border:1px solid rgba(181,107,168,.4)}
-
-.eq{display:flex;align-items:flex-end;gap:4px;height:30px}
-.eq i{width:5px;border-radius:3px;background:var(--sand);animation:eq 1s ease-in-out infinite;transform-origin:bottom}
-.eq i:nth-child(1){height:40%}
-.eq i:nth-child(2){height:85%;animation-delay:.15s}
-.eq i:nth-child(3){height:55%;animation-delay:.3s}
-.eq i:nth-child(4){height:95%;animation-delay:.45s}
-.eq i:nth-child(5){height:60%;animation-delay:.6s}
-@keyframes eq{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1.1)}}
-
-.steam path.s{stroke:var(--orange);animation:steam 2.4s ease-in-out infinite;opacity:0}
-.steam path.s:nth-of-type(2){animation-delay:.8s}
-@keyframes steam{0%{opacity:0;transform:translateY(4px)}40%{opacity:.9}100%{opacity:0;transform:translateY(-6px)}}
-.bulb .halo{transform-origin:center;transform-box:fill-box;animation:halo 2.2s ease-in-out infinite}
-@keyframes halo{0%,100%{opacity:.15;transform:scale(.85)}50%{opacity:.6;transform:scale(1.1)}}
-.bulb .ray{animation:npulse 2.2s ease-in-out infinite}
 .spark{transform-origin:center;transform-box:fill-box;animation:spin 9s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.spark2{transform-origin:center;transform-box:fill-box;animation:spin 9s linear infinite reverse}
-
-/* ================= sonido split ================= */
-.split{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:34px;position:relative}
-.side{padding:36px 36px 30px;position:relative;border-radius:28px}
-.sideA{background:linear-gradient(160deg,rgba(242,194,123,.16),rgba(242,194,123,.04));border:1px solid rgba(242,194,123,.42)}
-.sideB{background:linear-gradient(160deg,rgba(181,107,168,.2),rgba(181,107,168,.06));border:1px solid rgba(181,107,168,.5)}
-.bigL{
-  font-size:clamp(90px,10vw,150px);font-weight:800;line-height:.9;display:block;margin-bottom:6px;
-  color:transparent;
-}
-.sideA .bigL{-webkit-text-stroke:1.5px rgba(242,194,123,.55)}
-.sideB .bigL{-webkit-text-stroke:1.5px rgba(181,107,168,.65)}
-.side h3{font-size:21px;margin-bottom:12px}
-.side p{font-size:14.5px;font-weight:300;max-width:400px}
-.side svg{width:100%;max-width:380px;height:40px;margin-top:24px;overflow:visible}
-.note{margin-top:30px;font-size:14px;color:var(--muted);font-weight:300;max-width:760px}
-.note strong{color:var(--sand);font-weight:500}
-
-/* ================= impacto (light) ================= */
-.imp{margin-top:48px;display:grid;grid-template-columns:repeat(4,1fr);gap:34px}
-.imp .plus{
-  font-size:clamp(38px,4.4vw,60px);font-weight:800;letter-spacing:-.03em;line-height:1;
-  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
-  display:block;margin-bottom:12px;
-}
-.imp h3{color:var(--navy);font-size:19px}
-.imp p{font-size:14px;font-weight:400;color:rgba(29,34,75,.65)}
-.imp>div{border-top:2px solid rgba(29,34,75,.12);padding-top:22px}
-
-/* ================= difusión (cards) ================= */
-.fest{margin-top:48px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.fcard{
-  border:1px solid var(--line);border-radius:18px;padding:30px 24px;
-  background:rgba(255,255,255,.025);
-  transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease;
-}
-.fcard:hover{transform:translateY(-6px)}
-.fcard .icobox{width:72px;height:72px;border-radius:18px;margin-bottom:20px;display:flex;align-items:center;justify-content:center}
-.fcard p{font-size:13.5px;font-weight:300}
-.fc1:hover{border-color:rgba(242,194,123,.55)}
-.fc2:hover{border-color:rgba(255,122,89,.55)}
-.fc3:hover{border-color:rgba(255,94,125,.55)}
-.fc4:hover{border-color:rgba(181,107,168,.6)}
-.fc1 .icobox{background:rgba(242,194,123,.1);border:1px solid rgba(242,194,123,.35)}
-.fc2 .icobox{background:rgba(255,122,89,.1);border:1px solid rgba(255,122,89,.35)}
-.fc3 .icobox{background:rgba(255,94,125,.1);border:1px solid rgba(255,94,125,.35)}
-.fc4 .icobox{background:rgba(181,107,168,.12);border:1px solid rgba(181,107,168,.4)}
 .beat{transform-origin:center;transform-box:fill-box;animation:beat 1.5s ease-in-out infinite}
-@keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.18)}24%{transform:scale(1)}36%{transform:scale(1.12)}}
-.arc{animation:arcp 2.2s ease-in-out infinite;opacity:.2}
-.arc2{animation-delay:.35s}.arc3{animation-delay:.7s}
-@keyframes arcp{0%,100%{opacity:.15}50%{opacity:1}}
-.flagw{transform-origin:8px 8px;animation:sway 3s ease-in-out infinite}
-@keyframes sway{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-4deg)}}
-.rec{animation:blink 1.6s infinite}
+.gline{width:150px;height:3px;border-radius:2px;background:var(--grad);background-size:200% 100%;
+  animation:gslide 4s linear infinite}
+.eq{display:flex;align-items:flex-end;gap:5px;height:34px}
+.eq i{width:6px;border-radius:3px;background:var(--sand);animation:eq 1s ease-in-out infinite;transform-origin:bottom}
+.eq i:nth-child(1){height:40%}.eq i:nth-child(2){height:85%;animation-delay:.15s}
+.eq i:nth-child(3){height:55%;animation-delay:.3s}.eq i:nth-child(4){height:95%;animation-delay:.45s}
+.eq i:nth-child(5){height:60%;animation-delay:.6s}
 
-/* ================= mockups campaña ================= */
-.mocks{display:flex;gap:clamp(24px,4vw,54px);align-items:center;justify-content:center;margin-top:34px}
-.mocks img{
-  max-height:48vh;max-width:38vw;width:auto;object-fit:contain;border-radius:14px;
-  box-shadow:0 40px 90px -30px rgba(0,0,0,.95);
-  border:1px solid rgba(242,239,234,.08);
-}
-.mocks img:first-child{transform:rotate(-2.5deg)}
-.mocks img:last-child{transform:rotate(2deg) translateY(12px)}
+/* entrada */
+.fx{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.act .fx{opacity:1;transform:none}
+.act .f2{transition-delay:.1s}.act .f3{transition-delay:.2s}
+.act .f4{transition-delay:.3s}.act .f5{transition-delay:.4s}.act .f6{transition-delay:.5s}
+</style>
+<style>
+/* ============ PORTADA ============ */
+#cover{align-items:center;justify-content:center;padding:0}
+#cover video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:blur(9px) brightness(.9) saturate(1.05);transform:scale(1.08)}
+#cover .shade{position:absolute;inset:0;background:radial-gradient(80% 90% at 50% 45%,rgba(11,14,36,.3),rgba(11,14,36,.9))}
+.coverinner{display:flex;flex-direction:column;align-items:center;text-align:center}
+.coverinner .logo{width:520px}
+.datepill{display:inline-flex;align-items:center;gap:16px;margin-top:34px;padding:14px 34px;
+  border-radius:999px;border:1px solid rgba(242,239,234,.2);background:rgba(11,14,36,.5);
+  backdrop-filter:blur(8px);font-size:28px;font-weight:400;color:rgba(242,239,234,.92)}
+.datepill b{font-weight:600;color:var(--sand)}
+.coversub{margin-top:20px;font-size:24px;font-weight:500;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(242,239,234,.55)}
+.logobar{position:absolute;bottom:58px;left:0;right:0;z-index:3;
+  display:flex;justify-content:center;align-items:center;gap:40px}
+.logobar .prende{height:60px;object-fit:contain;opacity:.92}
+.logobar .sep{width:1px;height:52px;background:rgba(242,239,234,.18)}
+.mplogo{height:62px;object-fit:contain}
 
-/* ================= alianzas ================= */
-.tierline{margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:18px;overflow:hidden}
-.tierline>div{padding:42px 32px;border-right:1px solid var(--line);background:rgba(255,255,255,.02);transition:background .3s}
-.tierline>div:last-child{border-right:0}
-.tierline>div:hover{background:rgba(255,255,255,.05)}
-.tierline>div:nth-child(1){box-shadow:inset 0 4px 0 0 var(--sand)}
-.tierline>div:nth-child(2){box-shadow:inset 0 4px 0 0 var(--orange)}
-.tierline>div:nth-child(3){box-shadow:inset 0 4px 0 0 var(--pink)}
-.tierline>div:nth-child(4){box-shadow:inset 0 4px 0 0 var(--lila)}
-.tierline .tico{margin-bottom:22px;width:40px;height:40px}
-.tierline h3{font-size:19px;margin-bottom:10px}
-.tierline p{font-size:15px;font-weight:300}
+/* ============ AMBICIÓN / ROADMAP ============ */
+.road{display:grid;grid-template-columns:1fr 60px 1fr 60px 1fr;align-items:start;margin-top:56px}
+.rstep .rnum{font-size:76px;font-weight:800;line-height:1;letter-spacing:-.03em;display:block;margin-bottom:14px}
+.rstep{border-top:2px solid var(--line);padding-top:26px}
+.rs1{border-top-color:rgba(242,194,123,.6)}.rs2{border-top-color:rgba(255,94,125,.6)}.rs3{border-top-color:rgba(181,107,168,.65)}
+.rarr{align-self:center;margin-top:60px;color:rgba(242,239,234,.35);animation:npulse 2s ease-in-out infinite;justify-self:center}
 
-/* ================= pasos ================= */
-.slist{margin-top:60px;display:grid;grid-template-columns:repeat(4,1fr);gap:34px;position:relative}
-.slist::before{content:"";position:absolute;top:23px;left:24px;right:24px;height:1px;
-  background:linear-gradient(90deg,var(--sand),var(--orange),var(--pink),var(--lila));opacity:.4}
-.snum{
-  width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:600;color:var(--sand);
-  border:1px solid rgba(242,194,123,.5);background:var(--bg);
-  position:relative;z-index:1;margin-bottom:18px;
-}
-.slist .item{border-top:0;padding-top:0}
-.slist p{font-size:13.5px;font-weight:300}
+/* ============ FORMATO / STATS ============ */
+.stats4{display:grid;grid-template-columns:repeat(4,1fr);gap:44px;margin-top:56px}
+.stat{border-top:1px solid var(--line);padding-top:26px}
+.stat .n{display:block;font-size:104px;font-weight:800;line-height:.9;letter-spacing:-.04em;margin-bottom:20px}
+.stat h3{margin-bottom:10px}
+.stat p{font-size:21px;font-weight:300;line-height:1.45;color:rgba(242,239,234,.6)}
 
-/* ================= cierre ================= */
-#close .inner{display:flex;flex-direction:column;align-items:center;text-align:center}
-#close .logo{width:min(320px,44vw);margin-bottom:30px}
+/* ============ TIMELINE PROGRAMACIÓN ============ */
+.sched{display:flex;gap:14px;margin-top:38px;border-top:1px solid var(--line);padding-top:30px}
+.sblock{flex:1;border-radius:16px;padding:18px 20px 20px;border:1px solid var(--line);
+  background:rgba(255,255,255,.03)}
+.sblock .h{font-size:20px;font-weight:600;letter-spacing:.03em;margin-bottom:8px}
+.sblock .b{font-size:19px;font-weight:300;color:rgba(242,239,234,.62);line-height:1.35}
+.sb1{border-color:rgba(242,194,123,.42)}.sb1 .h{color:var(--sand)}
+.sb2{border-color:rgba(255,122,89,.42)}.sb2 .h{color:var(--orange)}
+.sb3{border-color:rgba(255,94,125,.42)}.sb3 .h{color:var(--pink)}
+.sb4{border-color:rgba(181,107,168,.5)}.sb4 .h{color:var(--lila2)}
+.sb5{border-color:rgba(242,239,234,.3)}.sb5 .h{color:var(--cream)}
 
-/* ================= bg image + shade oscuro ================= */
-.shadeD{position:absolute;inset:0;z-index:1;
-  background:linear-gradient(90deg,rgba(11,14,36,.97) 0%,rgba(11,14,36,.88) 45%,rgba(11,14,36,.62) 100%)}
-.bgstack img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transition:opacity .9s ease;
-}
-.bgstack img.on{opacity:1}
+/* ============ FILAS CON ÍCONO ============ */
+.zrow{display:grid;grid-template-columns:92px 300px 1fr;gap:30px;align-items:center;
+  padding:20px 0;border-top:1px solid var(--line)}
+.zrow:last-child{border-bottom:1px solid var(--line)}
+.zrow p{font-size:22px;font-weight:300;color:rgba(242,239,234,.62)}
+.zico{width:72px;height:72px;border-radius:20px;display:flex;align-items:center;justify-content:center}
+.z1 .zico{background:rgba(242,194,123,.1);border:1px solid rgba(242,194,123,.38)}
+.z2 .zico{background:rgba(255,122,89,.1);border:1px solid rgba(255,122,89,.38)}
+.z3 .zico{background:rgba(255,94,125,.1);border:1px solid rgba(255,94,125,.38)}
+.z4 .zico{background:rgba(181,107,168,.12);border:1px solid rgba(181,107,168,.42)}
+.z5 .zico{background:rgba(242,239,234,.08);border:1px solid rgba(242,239,234,.3)}
 
-/* acento crema (checklist) */
-.light .chk{background:rgba(29,34,75,.04);border-color:rgba(29,34,75,.14)}
-.light .chk:hover{border-color:var(--orange)}
-.light .chk h3{color:var(--navy)}
+/* ============ TELÉFONOS ============ */
+.phones{display:flex;gap:24px;justify-content:center;align-items:center}
+.phone{width:210px;aspect-ratio:9/18.5;border-radius:30px;border:1px solid rgba(242,239,234,.18);
+  padding:10px;background:#10143a;box-shadow:0 40px 90px -26px rgba(0,0,0,.95);flex:0 0 auto}
+.phone video{width:100%;height:100%;object-fit:cover;border-radius:22px}
+.ph1{transform:rotate(-4deg) translateY(16px)}
+.ph2{transform:scale(1.1);z-index:2}
+.ph3{transform:rotate(4deg) translateY(16px)}
 
-/* acento sunset */
-.sunset{background:linear-gradient(150deg,#1b1038 0%,#3a2264 38%,#6B4C9A 68%,#a4527f 100%)}
-.sunset .eyebrow{color:var(--sand)}
-.sunset p{color:rgba(242,239,234,.78)}
-.sunset .stag>div{background:rgba(255,255,255,.09);border-color:rgba(242,239,234,.22)}
-.sunset .stag>div:hover{border-color:var(--sand)}
-.sunset .stag .gnum{-webkit-text-stroke:1px rgba(242,239,234,.3)}
-.sunset[data-num]::after{-webkit-text-stroke:1px rgba(242,239,234,.18)}
+/* ============ IMPACTO (claro) ============ */
+.imp{display:grid;grid-template-columns:repeat(3,1fr);gap:40px 56px;margin-top:48px}
+.imp>div{border-top:2px solid rgba(29,34,75,.14);padding-top:22px}
+.imp .plus{display:block;font-size:52px;font-weight:800;line-height:1;margin-bottom:12px;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.imp h3{color:var(--navy);margin-bottom:8px}
+.imp p{font-size:21px;font-weight:400;line-height:1.45;color:rgba(29,34,75,.66)}
+.light .icobox{background:rgba(29,34,75,.04);border:1px solid rgba(29,34,75,.14)}
+.light .card{background:rgba(29,34,75,.03);border-color:rgba(29,34,75,.14)}
+.light .card p{color:rgba(29,34,75,.66)}
+.light .item{border-top-color:rgba(29,34,75,.16)}
+.light .item p{color:rgba(29,34,75,.66)}
+.light .chips span{border-color:rgba(29,34,75,.2);color:rgba(29,34,75,.7)}
+.light .tiny{color:rgba(29,34,75,.5)}
 
-/* chips grandes con ícono (slide 2) */
-.bchips{display:flex;gap:16px;flex-wrap:wrap;margin-top:32px}
-.bchip{
-  display:flex;align-items:center;gap:13px;
-  padding:11px 24px 11px 12px;border-radius:999px;
-  font-size:14.5px;font-weight:600;border:1px solid;
-  transition:transform .3s ease,box-shadow .3s ease;
-}
-.bchip:hover{transform:translateY(-4px)}
-.bchip .bic{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
-.bc1{border-color:rgba(242,194,123,.55);color:var(--sand)}
-.bc1 .bic{background:rgba(242,194,123,.16)}
-.bc1:hover{box-shadow:0 14px 34px -12px rgba(242,194,123,.5)}
-.bc2{border-color:rgba(255,122,89,.55);color:var(--orange)}
-.bc2 .bic{background:rgba(255,122,89,.16)}
-.bc2:hover{box-shadow:0 14px 34px -12px rgba(255,122,89,.5)}
-.bc3{border-color:rgba(255,94,125,.55);color:var(--pink)}
-.bc3 .bic{background:rgba(255,94,125,.16)}
-.bc3:hover{box-shadow:0 14px 34px -12px rgba(255,94,125,.5)}
-.bc4{border-color:rgba(181,107,168,.6);color:#d9a3cf}
-.bc4 .bic{background:rgba(181,107,168,.18)}
-.bc4:hover{box-shadow:0 14px 34px -12px rgba(181,107,168,.55)}
+/* ============ MERCADO PAGO ============ */
+.mplist{display:flex;flex-direction:column}
+.mplist p{margin:0;border-top:1px solid rgba(242,239,234,.28);padding:22px 0;
+  font-size:27px;font-weight:400;line-height:1.35}
+.mplist p:last-child{border-bottom:1px solid rgba(242,239,234,.28);color:var(--sand);font-weight:500}
 
-/* recorrido curvo (slide 5) */
-.shadeE{position:absolute;inset:0;z-index:1;
-  background:linear-gradient(100deg,rgba(11,14,36,.96) 0%,rgba(11,14,36,.72) 45%,rgba(11,14,36,.3) 100%)}
-.curve{margin-top:40px}
-.curve svg{width:100%;height:auto;display:block;overflow:visible}
-.svgn{cursor:pointer}
-.svgn .main{transition:transform .3s ease;transform-origin:center;transform-box:fill-box}
-.svgn:hover .main,.svgn.cur .main{transform:scale(1.4)}
-.svgn .halo2{transform-origin:center;transform-box:fill-box;animation:ring 2.6s ease-out infinite;pointer-events:none}
-.ibadge{
-  display:inline-flex;align-items:center;gap:9px;margin-top:10px;
-  padding:9px 18px;border-radius:999px;
-  border:1px dashed rgba(242,194,123,.55);color:var(--sand);
-  font-size:12.5px;font-weight:500;
-}
-.ibadge i{font-style:normal;animation:blink 1.6s infinite}
+/* ============ 21:00 ============ */
+.bignum{font-size:210px;font-weight:800;letter-spacing:-.05em;line-height:.9;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pulsering{position:absolute;left:120px;top:50%;width:520px;height:520px;transform:translateY(-50%);
+  border-radius:50%;border:1px solid rgba(242,194,123,.16);animation:ring 3.4s ease-out infinite;z-index:0}
 
-/* lightbox (slide 9) */
-#lb{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(6,8,22,.93);backdrop-filter:blur(10px);
-  display:none;align-items:center;justify-content:center;
-  padding:4vh 4vw;cursor:zoom-out;
-}
-#lb.on{display:flex}
-#lb img{max-width:93%;max-height:93%;border-radius:12px;box-shadow:0 50px 130px rgba(0,0,0,.9)}
-#lb .x{
-  position:absolute;top:24px;right:28px;width:48px;height:48px;border-radius:50%;
-  border:1px solid var(--line);background:rgba(255,255,255,.07);
-  color:var(--cream);font-size:20px;cursor:pointer;
-}
-.renders .imgframe{cursor:zoom-in}
+/* ============ PASTILLA DE PLATA ============ */
+.moneywrap{display:flex;flex-direction:column;align-items:flex-start;gap:26px}
+.bigpill{position:relative;display:inline-flex;align-items:center;gap:26px;
+  padding:26px 44px;border-radius:999px;
+  background:linear-gradient(120deg,rgba(242,194,123,.2),rgba(255,94,125,.16),rgba(181,107,168,.2));
+  border:1.5px solid rgba(242,239,234,.42);
+  box-shadow:0 30px 90px -30px rgba(255,122,89,.75),inset 0 1px 0 rgba(255,255,255,.25)}
+.bigpill::after{content:"";position:absolute;inset:-2px;border-radius:999px;
+  background:var(--grad);background-size:200% 100%;animation:gslide 5s linear infinite;
+  z-index:-1;filter:blur(12px);opacity:.35}
+.bigpill .lbl{font-size:18px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(242,239,234,.78);line-height:1.3;white-space:nowrap}
+.bigpill .amt{font-size:64px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--cream);white-space:nowrap}
+.bigpill .cur{font-size:24px;font-weight:600;letter-spacing:.1em;color:var(--sand);align-self:flex-end;padding-bottom:10px}
+.bigpill .picon{width:62px;height:62px;border-radius:50%;background:var(--sand);
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  box-shadow:0 10px 30px -8px rgba(242,194,123,.8)}
+.tbadge{position:absolute;top:-16px;left:38px;font-size:16px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;padding:8px 20px;border-radius:999px;color:#0B0E24;
+  background:linear-gradient(90deg,#F2C27B,#FF7A59);box-shadow:0 10px 26px -10px rgba(255,122,89,.9)}
+.pillrow{display:flex;gap:14px;flex-wrap:wrap}
+.minipill{display:flex;flex-direction:column;gap:4px;padding:15px 26px;border-radius:999px;
+  border:1px solid rgba(242,239,234,.3);background:rgba(255,255,255,.07)}
+.minipill .l{font-size:15px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,239,234,.6)}
+.minipill .v{font-size:23px;font-weight:600;color:var(--cream)}
+.usepill{display:flex;gap:12px;flex-wrap:wrap;max-width:640px}
+.usepill span{font-size:21px;font-weight:500;border-radius:999px;padding:11px 22px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(242,239,234,.26)}
 
-/* legado: cards con color propio */
-.stag>div:nth-child(1){background:linear-gradient(160deg,rgba(242,194,123,.24),rgba(242,194,123,.06));border-color:rgba(242,194,123,.5)}
-.stag>div:nth-child(2){background:linear-gradient(160deg,rgba(255,122,89,.24),rgba(255,122,89,.06));border-color:rgba(255,122,89,.5)}
-.stag>div:nth-child(3){background:linear-gradient(160deg,rgba(255,94,125,.24),rgba(255,94,125,.06));border-color:rgba(255,94,125,.5)}
-.stag>div:nth-child(4){background:linear-gradient(160deg,rgba(181,107,168,.3),rgba(181,107,168,.1));border-color:rgba(181,107,168,.55)}
+/* ============ SPONSORSHIP ============ */
+.tiers{display:grid;grid-template-columns:1.45fr 1fr;gap:32px;margin-top:34px}
+.tier{border-radius:28px;padding:34px 38px}
+.tierA{background:linear-gradient(160deg,rgba(242,194,123,.18),rgba(242,194,123,.04));border:1px solid rgba(242,194,123,.45)}
+.tierB{background:linear-gradient(160deg,rgba(181,107,168,.22),rgba(181,107,168,.06));border:1px solid rgba(181,107,168,.5)}
+.tier h3{font-size:31px;font-weight:700;margin-bottom:8px}
+.tierA h3{color:var(--sand)}.tierB h3{color:var(--lila2)}
+.tier .d{font-size:23px;font-weight:300;color:rgba(242,239,234,.72);margin-bottom:20px;line-height:1.4}
+.tier .lab{font-size:18px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(242,239,234,.5);margin-bottom:16px}
+.tlist{display:grid;gap:11px 34px;font-size:21px;font-weight:300;color:rgba(242,239,234,.8)}
+.tlist.two{grid-template-columns:1fr 1fr}
+.tlist span{display:flex;gap:10px;align-items:flex-start;line-height:1.3}
+.tlist span::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor;
+  opacity:.6;margin-top:8px;flex:0 0 auto}
 
-/* ================= slide nombre ================= */
-.namelogo{width:min(280px,26vw);margin:6px 0 30px}
-.nrow{
-  display:grid;grid-template-columns:200px 1fr;gap:26px;align-items:baseline;
-  padding:22px 0;border-top:1px solid var(--line);
-}
-.nrow:last-child{border-bottom:1px solid var(--line)}
-.nword{font-size:clamp(24px,2.6vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1}
-.nrow p{font-size:14px;font-weight:300;margin:0}
-.mkts{display:flex;flex-direction:column;gap:14px;margin-top:8px}
-.mkts>div{display:flex;gap:12px;align-items:flex-start}
-.mkts .mdot{width:8px;height:8px;border-radius:50%;margin-top:7px;flex:0 0 auto}
-.mkts b{color:var(--cream);font-weight:600;font-size:14px;display:block}
-.mkts span{font-size:12.5px;color:var(--muted);font-weight:300}
+/* ============ KPIs ============ */
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:34px 52px;margin-top:44px}
+.kpi>div{border-top:1px solid var(--line);padding-top:22px}
+.kpi h3{font-size:25px;font-weight:600;letter-spacing:.06em;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.kpi .l{display:flex;flex-direction:column;gap:8px;font-size:21px;font-weight:300;color:rgba(242,239,234,.68)}
 
-/* ================= slide formato (stats) ================= */
-.bigword{
-  position:absolute;bottom:2vh;left:4vw;z-index:1;pointer-events:none;
-  font-size:clamp(90px,13vw,190px);font-weight:800;line-height:1;letter-spacing:-.04em;
-  color:transparent;-webkit-text-stroke:1px rgba(242,239,234,.07);
-}
-.stats{display:flex;flex-direction:column;gap:30px;margin-top:36px}
-.stat{display:flex;gap:24px;align-items:center}
-.statnum{
-  font-size:clamp(58px,6.4vw,100px);font-weight:800;line-height:.9;letter-spacing:-.04em;
-  min-width:1.2ch;text-align:center;
-}
-.stat .sl{font-size:clamp(17px,1.8vw,22px);font-weight:600;line-height:1.3}
-.stat small{display:block;font-size:13px;color:var(--muted);font-weight:300}
+/* ============ CHECKS ============ */
+.chk{display:flex;gap:20px;align-items:flex-start;border:1px solid rgba(29,34,75,.14);
+  border-radius:16px;padding:18px 22px;background:rgba(29,34,75,.03)}
+.chk h3{font-size:23px;margin-bottom:4px;color:var(--navy)}
+.chk p{font-size:19px;font-weight:400;line-height:1.4;color:rgba(29,34,75,.65)}
 
-/* ================= producción (checklist) ================= */
-.chklist{margin-top:44px;display:flex;flex-direction:column;gap:16px;max-width:840px}
-.chk{
-  display:flex;gap:22px;align-items:flex-start;
-  border:1px solid var(--line);border-radius:16px;padding:22px 26px;
-  background:rgba(255,255,255,.02);transition:border-color .3s;
-}
-.chk:hover{border-color:rgba(242,194,123,.45)}
-.chk svg{flex:0 0 auto;margin-top:3px}
-.chk .ckc{stroke-dasharray:120;stroke-dashoffset:120;transition:stroke-dashoffset 1s ease .3s}
-.chk .ckm{stroke-dasharray:30;stroke-dashoffset:30;transition:stroke-dashoffset .6s ease .9s}
-.act .chk .ckc,.act .chk .ckm{stroke-dashoffset:0}
-.chk h3{margin-bottom:4px;font-size:16px}
-.chk p{font-size:14px;font-weight:300;margin:0}
+/* ============ CIERRE ============ */
+#close{align-items:center;justify-content:center;padding:0}
+#close .inner{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:1350px}
 
-/* ================= legado (staggered) ================= */
-.stag{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-.stag>div{
-  border:1px solid var(--line);border-radius:18px;padding:28px 26px 24px;
-  background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.01));
-  position:relative;overflow:hidden;transition:border-color .3s,transform .3s;
-}
-.stag>div:hover{border-color:rgba(181,107,168,.55)}
-.stag>div:nth-child(even){transform:translateY(28px)}
-.stag>div:nth-child(even):hover{transform:translateY(24px)}
-.stag .gnum{
-  position:absolute;top:8px;right:16px;font-size:56px;font-weight:800;line-height:1;
-  color:transparent;-webkit-text-stroke:1px rgba(242,239,234,.16);
-}
-.stag h3{font-size:16px;margin-bottom:8px}
-.stag p{font-size:13.5px;font-weight:300}
-
-/* ================= próximos pasos (roadmap) ================= */
-.road{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:20px;align-items:start;margin-top:64px}
-.rstep .rnum{
-  font-size:clamp(44px,5vw,72px);font-weight:800;line-height:1;letter-spacing:-.04em;
-  display:block;margin-bottom:16px;
-}
-.rstep h3{font-size:16.5px;margin-bottom:6px}
-.rstep p{font-size:13.5px;font-weight:300}
-.rarr{
-  align-self:center;color:rgba(242,239,234,.35);margin-top:14px;
-  animation:npulse 2s ease-in-out infinite;
-}
-.rarr:nth-of-type(4){animation-delay:.5s}
-.rarr:nth-of-type(6){animation-delay:1s}
-
-/* ================= nav ui ================= */
-#ui{position:fixed;bottom:26px;right:30px;z-index:50;display:flex;align-items:center;gap:18px}
-#counter{font-size:12px;color:rgba(242,239,234,.5);font-variant-numeric:tabular-nums;letter-spacing:.06em;mix-blend-mode:difference}
-.arrow{
-  width:44px;height:44px;border-radius:50%;
-  border:1px solid var(--line);background:rgba(11,14,36,.6);
-  color:var(--cream);font-size:17px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:.25s;backdrop-filter:blur(6px);
-}
+/* ============ UI NAVEGACIÓN ============ */
+#progress{position:fixed;top:0;left:0;height:3px;background:var(--grad);z-index:80;width:0;transition:width .5s ease}
+#ui{position:fixed;bottom:22px;right:26px;z-index:80;display:flex;align-items:center;gap:14px}
+#counter{font-size:13px;color:rgba(242,239,234,.55);font-variant-numeric:tabular-nums;letter-spacing:.08em}
+.arrow{width:42px;height:42px;border-radius:50%;border:1px solid rgba(242,239,234,.18);
+  background:rgba(11,14,36,.65);color:var(--cream);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:.25s;backdrop-filter:blur(6px)}
 .arrow:hover{border-color:var(--orange);color:var(--orange)}
-#progress{position:fixed;top:0;left:0;height:2px;background:var(--grad);z-index:60;width:0;transition:width .4s ease}
-.hint{position:fixed;bottom:30px;left:30px;z-index:50;font-size:12px;color:rgba(242,239,234,.4);font-weight:300;mix-blend-mode:difference}
-
-@media(max-width:900px){
-  .c2,.split{grid-template-columns:1fr;gap:28px}
-  .split::before{display:none}
-  .side,.side+.side{padding:10px 0}
-  .r3,.r4,.imp,.slist,.tierline,.fest,.pill4,.mkt{grid-template-columns:1fr 1fr}
-  .renders{grid-template-columns:1fr}
-  .zrow{grid-template-columns:64px 1fr;gap:16px}
-  .zrow p{grid-column:span 2}
-  .tierline>div{border-bottom:1px solid var(--line)}
-  .slist::before{display:none}
-  .sidewaves{display:none}
-  .road{grid-template-columns:1fr 1fr}
-  .rarr{display:none}
-  .stag>div:nth-child(even){transform:none}
-  .bigword{display:none}
-  .phones{flex-wrap:wrap}
-  .mocks{flex-direction:column}
-  .calwrap{margin-left:0}
-  .slide{padding:5vh 8vw;overflow-y:auto}
-}
+#label{position:fixed;bottom:26px;left:28px;z-index:80;font-size:13px;font-weight:400;
+  color:rgba(242,239,234,.45);letter-spacing:.04em}
+#dots{position:fixed;top:50%;right:14px;transform:translateY(-50%);z-index:80;
+  display:flex;flex-direction:column;gap:9px}
+#dots i{width:7px;height:7px;border-radius:50%;background:rgba(242,239,234,.22);cursor:pointer;transition:.25s}
+#dots i.on{background:var(--sand);transform:scale(1.5)}
+@media print{#ui,#dots,#label,#progress{display:none}}
 </style>
 </head>
 <body>
-
 <div id="progress"></div>
+<div id="viewport">
+<div id="stage">
+<div id="track">
 
-<div id="deck">
-
-  <!-- 01 · portada -->
-  <section class="slide" id="cover">
-    <video autoplay muted loop playsinline src="https://i.imgur.com/r6OGj3x.mp4"></video>
-    <div class="shadecover"></div>
-    <div class="inner">
-      <img class="logo fx" src="https://i.imgur.com/STRghPA.png" alt="Roca Lights — El espectáculo del anochecer">
-      <div class="gline fx"></div>
+<!-- ══════════ 01 · PORTADA ══════════ -->
+<section class="slide" id="cover" data-label="Portada">
+  <video class="bgel" autoplay muted loop playsinline src="https://i.imgur.com/r6OGj3x.mp4"></video>
+  <div class="shade"></div>
+  <div class="coverinner">
+    <img class="logo fx" src="https://i.imgur.com/STRghPA.png" alt="ROCALIGHTS">
+    <div class="gline fx f2" style="margin-top:36px"></div>
+    <div class="datepill fx f3">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#F2C27B" stroke-width="1.7" stroke-linecap="round">
+        <rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>
+        <circle cx="9" cy="15" r="1.4" fill="#F2C27B" stroke="none"/><circle cx="14" cy="15" r="1.4" fill="#F2C27B" stroke="none"/>
+      </svg>
+      Santo Domingo · <b>19 y 20 de febrero de 2027</b>
     </div>
-    <div class="minilogos">
-      <img src="https://i.imgur.com/ZXJSjg2.png" alt="Estudio Prende">
-      <div class="sep"></div>
-      <img src="https://i.imgur.com/qvkYNCA.png" alt="Municipalidad de Santo Domingo">
-    </div>
-  </section>
+    <p class="coversub fx f4">Propuesta de alianza</p>
+  </div>
+  <div class="logobar">
+    <img class="prende" src="https://i.imgur.com/ZXJSjg2.png" alt="Estudio Prende">
+    <div class="sep"></div>
+    <img class="mplogo" src="https://i.imgur.com/ZsMOsZd.png" alt="Mercado Pago">
+  </div>
+</section>
 
-  <!-- 02 · statement -->
-  <section class="slide tintO" data-num="02">
-    <svg class="sidewaves" viewBox="0 0 430 520" fill="none" stroke-width="3">
-      <path class="wave" stroke="#F2C27B" d="M0 80 q28 -18 56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0"/>
-      <path class="wave w2" stroke="#FF7A59" d="M20 170 q28 -18 56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0"/>
-      <path class="wave w3" stroke="#FF5E7D" d="M0 260 q28 -18 56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0"/>
-      <path class="wave w4" stroke="#B56BA8" d="M30 350 q28 -18 56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0"/>
-      <path class="wave w5" stroke="#6B4C9A" d="M0 440 q28 -18 56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0"/>
-    </svg>
-    <div class="inner">
-      <p class="statement fx"><span class="thin">No es</span> un festival más.<br>Es la costa que <span class="gradtxt">se enciende.</span></p>
-      <p class="lead fx" style="margin-top:32px">Proponemos una nueva forma de recorrer y poner en valor las rocas de Santo Domingo durante la hora más hermosa del día: <strong>el anochecer</strong>.</p>
-      <p class="rotline fx">Roca Lights es <span id="rota">un recorrido costero</span></p>
-      <div class="bchips fx">
-        <div class="bchip bc1">
-          <span class="bic">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#F2C27B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="9" cy="8" r="3"/><path d="M3.5 19 c0 -3 2.5 -5 5.5 -5 s5.5 2 5.5 -5" opacity="0"/><path d="M3.5 19 c0 -3 2.5 -5 5.5 -5 s5.5 2 5.5 5"/>
-              <circle cx="16.5" cy="9.5" r="2.3"/><path d="M15 14.6 c3 -.4 5.5 1.4 5.5 4.4"/>
-            </svg>
-          </span>
-          familiar
-        </div>
-        <div class="bchip bc2">
-          <span class="bic">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FF7A59" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9 a2 2 0 0 0 0 6 v3 a1 1 0 0 0 1 1 h16 a1 1 0 0 0 1 -1 v-3 a2 2 0 0 1 0 -6 V6 a1 1 0 0 0 -1 -1 H4 a1 1 0 0 0 -1 1 Z"/>
-              <path d="M14 5 v2 M14 11 v2 M14 17 v2" stroke-dasharray="2 3"/>
-            </svg>
-          </span>
-          gratuito
-        </div>
-        <div class="bchip bc3">
-          <span class="bic">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#FF5E7D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 21 c-4 -4.2 -7 -7.6 -7 -11 a7 7 0 0 1 14 0 c0 3.4 -3 6.8 -7 11 Z"/>
-              <circle cx="12" cy="10" r="2.6"/>
-            </svg>
-          </span>
-          alto impacto turístico
-        </div>
-        <div class="bchip bc4">
-          <span class="bic">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#d9a3cf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 11 l11 -5 v12 l-11 -5 v-2 Z"/><path d="M6 14 v4 a1 1 0 0 0 1 1 h2 v-4"/>
-              <path d="M17.5 8.5 a5 5 0 0 1 0 7" opacity=".7"/><path d="M20 6 a9 9 0 0 1 0 12" opacity=".4"/>
-            </svg>
-          </span>
-          enorme potencial de difusión
-        </div>
-      </div>
+<!-- ══════════ 02 · LA GRAN IDEA ══════════ -->
+<section class="slide tintO" data-label="La gran idea">
+  <div class="ghost">02</div>
+  <svg class="bgel" viewBox="0 0 430 520" fill="none" stroke-width="3" style="position:absolute;right:-40px;top:50%;transform:translateY(-50%);width:430px;opacity:.75">
+    <path class="wave" stroke="#F2C27B" d="M0 80 q28 -18 56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0"/>
+    <path class="wave w2" stroke="#FF7A59" d="M20 170 q28 -18 56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0"/>
+    <path class="wave w3" stroke="#FF5E7D" d="M0 260 q28 -18 56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0"/>
+    <path class="wave w4" stroke="#B56BA8" d="M30 350 q28 -18 56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0"/>
+    <path class="wave w5" stroke="#6B4C9A" d="M0 440 q28 -18 56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0 t56 0"/>
+  </svg>
+  <div style="max-width:1180px">
+    <div class="eyebrow fx">La gran idea</div>
+    <p class="statement fx f2"><span class="thin">No es</span> un festival más.<br>Es la costa que <span class="grad">se enciende.</span></p>
+    <p class="lead fx f3" style="margin-top:40px;max-width:940px">ROCALIGHTS transforma las rocas de Santo Domingo en un espectáculo de <strong>mapping, arte audiovisual, luz y música frente al mar</strong>: una experiencia gratuita y al aire libre que parte con el sunset y cobra vida al anochecer.</p>
+    <div class="bchips fx f4" style="margin-top:44px">
+      <div class="bchip bc1"><span class="bic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#F2C27B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><circle cx="16.5" cy="9.5" r="2.3"/><path d="M15 14.6c3-.4 5.5 1.4 5.5 4.4"/></svg></span>familiar</div>
+      <div class="bchip bc2"><span class="bic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF7A59" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 0 0 6v3a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-3a2 2 0 0 1 0-6V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1Z"/><path d="M14 5v2M14 11v2M14 17v2" stroke-dasharray="2 3"/></svg></span>gratuito</div>
+      <div class="bchip bc3"><span class="bic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#FF5E7D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="3"/><path d="m10 10 5 2-5 2z" fill="#FF5E7D" stroke="none"/></svg></span>audiovisual</div>
+      <div class="bchip bc4"><span class="bic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#d9a3cf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></span>contemporáneo</div>
+      <div class="bchip bc5"><span class="bic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#F2EFEA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.3 10.7 7.4-4.3M8.3 13.3l7.4 4.3"/></svg></span>altamente compartible</div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 03 · el nombre -->
-  <section class="slide" data-num="03">
-    <div class="inner cols c2" style="grid-template-columns:.85fr 1.15fr;gap:70px">
-      <div>
-        <div class="eyebrow fx">El nombre</div>
-        <img class="namelogo fx" src="https://i.imgur.com/STRghPA.png" alt="Roca Lights">
-        <div class="mkts fx f3">
-          <div><i class="mdot d1"></i><div><b>#ROCALIGHTS</b><span>listo para convertirse en hashtag y conversación</span></div></div>
-          <div><i class="mdot d2"></i><div><b>marca anual</b><span>Rocalights 2027, 2028… una cita que se repite</span></div></div>
-          <div><i class="mdot d3"></i><div><b>crece y se licencia</b><span>merchandising, sitio web, redes, prensa</span></div></div>
-          <div><i class="mdot d4"></i><div><b>suena internacional</b><span>y sigue anclado al territorio gracias a “roca”</span></div></div>
-        </div>
-      </div>
-      <div>
-        <h2 class="fx" style="margin-bottom:26px">Cuatro ideas<br>en <em>dos palabras</em></h2>
-        <div class="nrow fx"><span class="nword" style="color:var(--sand)">roca</span><p>El patrimonio natural que da identidad al balneario.</p></div>
-        <div class="nrow fx f2"><span class="nword gradtxt">lights</span><p>El arte lumínico: mapping generativo y proyecciones sobre el paisaje.</p></div>
-        <div class="nrow fx f3"><span class="nword" style="color:var(--pink)">espectáculo</span><p>No es una exposición ni una instalación: es una experiencia masiva.</p></div>
-        <div class="nrow fx f4"><span class="nword" style="color:var(--lila)">anochecer</span><p>El momento único del día del que el proyecto se apropia.</p></div>
+<!-- ══════════ 03 · LA AMBICIÓN ══════════ -->
+<section class="slide plain" data-label="La ambición">
+  <div class="ghost">03</div>
+  <div class="eyebrow fx">La ambición</div>
+  <h2 class="fx f2">El objetivo</h2>
+  <p class="lead fx f2" style="max-width:1120px">La primera edición de una marca que quiere quedarse: una experiencia reconocible que pueda regresar, crecer y evolucionar año tras año.</p>
+  <div class="road">
+    <div class="rstep rs1 fx f3"><span class="rnum" style="color:var(--sand)">2027</span><h3 style="letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">Instalar</h3><p class="body">Una primera edición impactante, novedosa y muy comentada durante el verano.</p></div>
+    <svg class="rarr" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+    <div class="rstep rs2 fx f4"><span class="rnum" style="color:var(--pink)">2028</span><h3 style="letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">Consolidar</h3><p class="body">Crecer en artistas, programación, alianzas, contenidos y alcance.</p></div>
+    <svg class="rarr" viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="animation-delay:.5s"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+    <div class="rstep rs3 fx f5"><span class="rnum" style="color:var(--lila2)">Año a año</span><h3 style="letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px">Construir</h3><p class="body">Convertir ROCALIGHTS en una cita reconocible del verano en Santo Domingo.</p></div>
+  </div>
+  <p class="kicker fx f6" style="margin-top:60px">2027 no es solamente un evento. Es el <span class="grad">nacimiento de ROCALIGHTS</span>.</p>
+</section>
+
+<!-- ══════════ 04 · EL LUGAR ══════════ -->
+<section class="slide plain" data-label="El lugar">
+  <div class="ghost">04</div>
+  <div class="cols c2">
+    <div>
+      <div class="eyebrow fx">El lugar</div>
+      <h2 class="fx f2">Santo Domingo</h2>
+      <p class="lead fx f2" style="margin-bottom:36px">Un paisaje conocido, visto de una forma completamente nueva. Las rocas del borde costero son parte de la identidad de la comuna, y ROCALIGHTS usa la luz para volver a mirarlas.</p>
+      <div class="fx f3" style="border-top:1px solid var(--line);padding-top:32px">
+        <p class="kicker">No construimos un escenario para esconder el lugar.<br><span class="grad">El lugar es el escenario.</span></p>
       </div>
     </div>
-  </section>
-
-  <!-- 04 · el lugar -->
-  <section class="slide" data-num="04">
-    <div class="inner cols c2">
-      <div>
-        <div class="eyebrow fx">El lugar</div>
-        <h2 class="fx">Un patrimonio natural<br><em>por re-descubrir</em></h2>
-        <p class="lead fx">Las rocas de la costa de Santo Domingo son parte de la identidad del territorio, pero de noche desaparecen del paisaje. Esta activación turística las pone en el centro: la luz invita a mirarlas de nuevo y releva su potencial patrimonial, cultural y turístico.</p>
+    <div class="fx f4">
+      <div class="imgframe" style="aspect-ratio:4/3">
+        <img src="https://i.imgur.com/cQ7AA5f.png" alt="Vista satelital del borde costero de Santo Domingo">
+        <div class="chipimg"><i></i>Borde costero · Santo Domingo</div>
       </div>
-      <div class="fx f3">
-        <div class="imgframe" style="aspect-ratio:4/3">
-          <img src="https://i.imgur.com/cQ7AA5f.png" alt="Vista satelital del borde costero de Santo Domingo">
-          <div class="chip">Borde costero · Santo Domingo</div>
+      <p class="caption">Sector de referencia para la primera edición.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 05 · EL FORMATO ══════════ -->
+<section class="slide deep" data-label="El formato">
+  <div class="ghost">05</div>
+  <div class="bigword">febrero</div>
+  <div class="eyebrow fx">El formato · ROCALIGHTS 2027</div>
+  <h2 class="fx f2">Dos noches. Cinco puntos.<br>Una experiencia.</h2>
+  <div class="stats4">
+    <div class="stat fx f3"><span class="n" style="color:var(--sand)">4</span><h3>puntos de mapping</h3><p>Cuatro formaciones rocosas intervenidas por artistas visuales y VJs invitados.</p></div>
+    <div class="stat fx f4"><span class="n" style="color:var(--orange)">4</span><h3>universos visuales</h3><p>Cada punto desarrolla una obra y una identidad propia.</p></div>
+    <div class="stat fx f5"><span class="n" style="color:var(--pink)">1</span><h3>escenario musical</h3><p>El punto de encuentro: sunset, música, DJs y gran cierre.</p></div>
+    <div class="stat fx f6"><span class="n" style="color:var(--lila2)">2</span><h3>noches</h3><p>Viernes 19 y sábado 20 de febrero de 2027.</p></div>
+  </div>
+  <p class="lead fx f6" style="margin-top:54px;font-size:27px">Una primera edición concentrada, diseñada para cuidar la calidad artística, técnica y operacional.</p>
+</section>
+
+<!-- ══════════ 06 · MAPPING ══════════ -->
+<section class="slide tintP" data-label="Mapping">
+  <div class="ghost">06</div>
+  <div class="cols" style="grid-template-columns:1.15fr .85fr">
+    <div>
+      <div class="eyebrow fx">El corazón de ROCALIGHTS</div>
+      <h2 class="fx f2">Mapping <span class="grad">generativo</span></h2>
+      <p class="sub fx f2">Cuatro rocas. Cuatro artistas. Cuatro mundos.</p>
+      <p class="lead fx f3" style="font-size:26px;max-width:900px;margin-top:14px">A diferencia de una pieza pregrabada, los artistas mezclan y transforman la imagen en vivo usando la geometría y la escala de cada roca. <strong>Cada pase puede variar: la obra está viva.</strong></p>
+      <div class="g4 fx f4" style="gap:28px;margin-top:40px">
+        <div class="item" style="padding-top:20px">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#F2C27B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:14px"><path d="M3 17V7M8 20V4M13 17V7M18 20V4M23 15V9" /></svg>
+          <h3 style="font-size:24px">Visuales generativos</h3><p style="font-size:20px">Composiciones construidas por sistemas digitales.</p>
         </div>
-        <p class="caption">Zona propuesta para el circuito.</p>
+        <div class="item" style="padding-top:20px">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#FF7A59" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:14px"><circle cx="7" cy="12" r="4.2"/><circle cx="17" cy="12" r="4.2"/><path d="M7 12h.01M17 12h.01"/></svg>
+          <h3 style="font-size:24px">VJ en vivo</h3><p style="font-size:20px">El artista interviene el contenido durante el show.</p>
+        </div>
+        <div class="item" style="padding-top:20px">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#FF5E7D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:14px"><path d="M2 20h20"/><path d="M4 20 8 9l3 4 3-8 6 15"/><path d="M13 3.5 16 6"/></svg>
+          <h3 style="font-size:24px">Mapping</h3><p style="font-size:20px">La obra se adapta al volumen real de cada roca.</p>
+        </div>
+        <div class="item" style="padding-top:20px">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#d9a3cf" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:14px"><path class="spark" d="M12 3l1.9 6.1L20 11l-6.1 1.9L12 19l-1.9-6.1L4 11l6.1-1.9z"/></svg>
+          <h3 style="font-size:24px">Obra original</h3><p style="font-size:20px">Un lenguaje audiovisual distinto en cada punto.</p>
+        </div>
+      </div>
+      <div class="chips fx f5" style="margin-top:34px">
+        <span>projection mapping</span><span>composición audiovisual</span><span>animación</span><span>creación en vivo</span>
       </div>
     </div>
-  </section>
-
-  <!-- 05 · la experiencia -->
-  <section class="slide" data-num="05" id="exp">
-    <div class="bgimg bgstack">
-      <img class="on" src="https://i.imgur.com/rsNxGdc.jpeg" alt="">
-      <img src="https://i.imgur.com/WOpbCmI.jpeg" alt="">
-      <img src="https://i.imgur.com/VqCYbnP.jpeg" alt="">
-      <img src="https://i.imgur.com/VdxJToq.jpeg" alt="">
-      <img src="https://i.imgur.com/Ccq9B8B.png" alt="">
-    </div>
-    <div class="shadeE"></div>
-    <div class="inner">
-      <div class="eyebrow fx">La experiencia</div>
-      <h2 class="fx">Un circuito nocturno<br>junto al mar</h2>
-      <p class="lead fx" style="max-width:560px">Un <strong>camino caminable</strong> conecta cuatro puntos de proyección sobre las rocas, desde la <strong>piedra del sol</strong> hasta la zona festival.</p>
-      <span class="ibadge fx"><i>✦</i> recorre los puntos con el cursor — el fondo cambia</span>
-      <div class="curve fx">
-        <svg viewBox="0 0 1000 250" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="cg" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#F2C27B"/><stop offset=".38" stop-color="#FF7A59"/>
-              <stop offset=".68" stop-color="#FF5E7D"/><stop offset="1" stop-color="#B56BA8"/>
-            </linearGradient>
-          </defs>
-          <path class="flow" d="M30 150 C 110 118, 190 92, 270 92 S 420 122, 500 122 S 650 72, 730 72 S 880 122, 960 122"
-                fill="none" stroke="url(#cg)" stroke-width="3.5"/>
-          <g font-family="Inter,sans-serif">
-            <g class="svgn" data-img="0">
-              <circle class="halo2" cx="30" cy="150" r="26" fill="none" stroke="#F2C27B" stroke-width="1.5"/>
-              <circle class="main" cx="30" cy="150" r="15" fill="#F2C27B"/>
-              <text x="8" y="192" fill="#F2EFEA" font-size="15" font-weight="700">piedra del sol</text>
-              <text x="8" y="211" fill="rgba(242,239,234,.6)" font-size="12.5">encendido inaugural</text>
-            </g>
-            <g class="svgn" data-img="1">
-              <circle class="halo2" cx="270" cy="92" r="26" fill="none" stroke="#FF7A59" stroke-width="1.5" style="animation-delay:.5s"/>
-              <circle class="main" cx="270" cy="92" r="15" fill="#FF7A59"/>
-              <text x="270" y="48" fill="#F2EFEA" font-size="15" font-weight="700" text-anchor="middle">punto 02</text>
-              <text x="270" y="66" fill="rgba(242,239,234,.6)" font-size="12.5" text-anchor="middle">proyección</text>
-            </g>
-            <g class="svgn" data-img="2">
-              <circle class="halo2" cx="500" cy="122" r="26" fill="none" stroke="#FF5E7D" stroke-width="1.5" style="animation-delay:1s"/>
-              <circle class="main" cx="500" cy="122" r="15" fill="#FF5E7D"/>
-              <text x="500" y="176" fill="#F2EFEA" font-size="15" font-weight="700" text-anchor="middle">punto 03</text>
-              <text x="500" y="194" fill="rgba(242,239,234,.6)" font-size="12.5" text-anchor="middle">proyección</text>
-            </g>
-            <g class="svgn" data-img="3">
-              <circle class="halo2" cx="730" cy="72" r="26" fill="none" stroke="#B56BA8" stroke-width="1.5" style="animation-delay:1.5s"/>
-              <circle class="main" cx="730" cy="72" r="15" fill="#B56BA8"/>
-              <text x="730" y="30" fill="#F2EFEA" font-size="15" font-weight="700" text-anchor="middle">punto 04</text>
-              <text x="730" y="48" fill="rgba(242,239,234,.6)" font-size="12.5" text-anchor="middle">proyección</text>
-            </g>
-            <g class="svgn" data-img="4">
-              <circle class="halo2" cx="960" cy="122" r="30" fill="none" stroke="#F2EFEA" stroke-width="1.5" style="animation-delay:2s"/>
-              <circle class="main" cx="960" cy="122" r="18" fill="#F2EFEA"/>
-              <text x="960" y="122" fill="#0B0E24" font-size="15" font-weight="800" text-anchor="middle" dominant-baseline="central">★</text>
-              <text x="992" y="176" fill="#F2EFEA" font-size="15" font-weight="700" text-anchor="end">zona festival</text>
-              <text x="992" y="194" fill="rgba(242,239,234,.6)" font-size="12.5" text-anchor="end">música · foodtrucks · arte</text>
-            </g>
-          </g>
-        </svg>
+    <div class="fx f5">
+      <div class="imgframe" style="aspect-ratio:3/4;max-height:720px">
+        <img src="https://i.imgur.com/bjBSD3I.png" alt="Visualización de mapping sobre roca">
       </div>
+      <p class="caption">Visualización referencial de mapping sobre roca.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 06 · el formato / fechas -->
-  <section class="slide deep" data-num="06">
-    <div class="bigword">febrero</div>
-    <div class="inner cols c2">
-      <div>
-        <div class="eyebrow fx">El formato</div>
-        <div class="stats">
-          <div class="stat fx"><span class="statnum" style="color:var(--sand)">2</span><div class="sl">semanas<small>la segunda y tercera de febrero · tentativo</small></div></div>
-          <div class="stat fx f2"><span class="statnum gradtxt">8</span><div class="sl">noches<small>de jueves a domingo · entrada gratuita</small></div></div>
-          <div class="stat fx f3"><span class="statnum" style="color:var(--pink)">2</span><div class="sl">exposiciones<small>la muestra cambia entre semanas: quienes vuelven ven obras nuevas</small></div></div>
-        </div>
-        <p class="lead fx f4" style="margin-top:30px;font-size:15px">El formato de dos quincenas aprovecha además el <strong>recambio de veraneantes</strong>: dos públicos distintos, una misma experiencia.</p>
+<!-- ══════════ 07 · LA EXPERIENCIA ══════════ -->
+<section class="slide plain" data-label="La experiencia">
+  <img class="bgel" src="https://i.imgur.com/VqCYbnP.jpeg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+  <div class="shade" style="position:absolute;inset:0;background:linear-gradient(100deg,rgba(11,14,36,.97) 0%,rgba(11,14,36,.86) 45%,rgba(11,14,36,.5) 100%)"></div>
+  <div class="ghost">07</div>
+  <div class="eyebrow fx">Una noche en ROCALIGHTS</div>
+  <h2 class="fx f2" style="margin-bottom:6px">La experiencia</h2>
+  <p class="sub fx f2">Del sunset al gran cierre.</p>
+  <svg class="fx f3" viewBox="0 0 1700 250" style="width:100%;height:auto;margin-top:34px;overflow:visible;font-family:Inter,sans-serif">
+    <defs><linearGradient id="rlc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#F2C27B"/><stop offset=".38" stop-color="#FF7A59"/>
+      <stop offset=".68" stop-color="#FF5E7D"/><stop offset="1" stop-color="#B56BA8"/></linearGradient></defs>
+    <path class="flow" d="M40 155 C 200 118, 320 92, 440 92 S 700 128, 860 128 S 1120 70, 1260 70 S 1520 126, 1660 126" fill="none" stroke="url(#rlc)" stroke-width="4"/>
+    <g><circle class="ringx" cx="40" cy="155" r="34" fill="none" stroke="#F2C27B" stroke-width="1.6"/><circle cx="40" cy="155" r="17" fill="#F2C27B"/>
+      <text x="8" y="210" fill="#F2EFEA" font-size="26" font-weight="700">SUNSET</text>
+      <text x="8" y="240" fill="rgba(242,239,234,.6)" font-size="21">llegada, música y gastronomía</text></g>
+    <g><circle class="ringx" cx="440" cy="92" r="36" fill="none" stroke="#FF7A59" stroke-width="1.6" style="animation-delay:.5s"/><circle cx="440" cy="92" r="19" fill="#FF7A59"/>
+      <text x="440" y="34" fill="#F2EFEA" font-size="26" font-weight="700" text-anchor="middle">21:00 · EL ENCENDIDO</text>
+      <text x="440" y="62" fill="rgba(242,239,234,.6)" font-size="21" text-anchor="middle">comienza oficialmente ROCALIGHTS</text></g>
+    <g><circle class="ringx" cx="860" cy="128" r="34" fill="none" stroke="#FF5E7D" stroke-width="1.6" style="animation-delay:1s"/><circle cx="860" cy="128" r="17" fill="#FF5E7D"/>
+      <text x="860" y="184" fill="#F2EFEA" font-size="26" font-weight="700" text-anchor="middle">MAPPING</text>
+      <text x="860" y="214" fill="rgba(242,239,234,.6)" font-size="21" text-anchor="middle">cuatro puntos, pases programados</text></g>
+    <g><circle class="ringx" cx="1260" cy="70" r="34" fill="none" stroke="#B56BA8" stroke-width="1.6" style="animation-delay:1.5s"/><circle cx="1260" cy="70" r="17" fill="#B56BA8"/>
+      <text x="1260" y="14" fill="#F2EFEA" font-size="26" font-weight="700" text-anchor="middle">RECORRIDO</text>
+      <text x="1260" y="42" fill="rgba(242,239,234,.6)" font-size="21" text-anchor="middle">descubrir, volver, permanecer</text></g>
+    <g><circle class="ringx" cx="1660" cy="126" r="38" fill="none" stroke="#F2EFEA" stroke-width="1.6" style="animation-delay:2s"/><circle cx="1660" cy="126" r="21" fill="#F2EFEA"/>
+      <text x="1700" y="182" fill="#F2EFEA" font-size="26" font-weight="700" text-anchor="end">GRAN CIERRE</text>
+      <text x="1700" y="212" fill="rgba(242,239,234,.6)" font-size="21" text-anchor="end">artista o banda invitada</text></g>
+  </svg>
+  <div class="sched fx f5">
+    <div class="sblock sb1"><div class="h">Antes de 21:00</div><div class="b">Sunset · DJ · gastronomía · encuentro</div></div>
+    <div class="sblock sb2"><div class="h">21:00 — 22:00</div><div class="b">Pase 1 · puntos 1+3 y 2+4 alternados</div></div>
+    <div class="sblock sb3"><div class="h">22:00 — 23:00</div><div class="b">Pase 2 · puntos 1+3 y 2+4 alternados</div></div>
+    <div class="sblock sb4"><div class="h">23:00 — 00:00</div><div class="b">Gran cierre musical</div></div>
+    <div class="sblock sb5"><div class="h">Toda la noche</div><div class="b">Recorrido libre entre los puntos</div></div>
+  </div>
+  <p class="tiny fx f6" style="margin-top:18px">Programación referencial, sujeta a desarrollo artístico y técnico.</p>
+</section>
+
+<!-- ══════════ 08 · PUNTO DE ENCUENTRO ══════════ -->
+<section class="slide tintK" data-label="Punto de encuentro">
+  <div class="ghost">08</div>
+  <div class="eyebrow fx">Más que mapping</div>
+  <h2 class="fx f2" style="margin-bottom:8px">El punto de encuentro</h2>
+  <p class="lead fx f2" style="max-width:1150px">Una noche para mirar, recorrer, comer, escuchar y quedarse. Un panorama atractivo para familias, jóvenes y comunidad.</p>
+  <div style="margin-top:30px">
+    <div class="zrow z1 fx f3"><div class="zico"><div class="eq"><i></i><i></i><i></i><i></i><i></i></div></div><h3>Música</h3><p>Sunset, DJs y programación musical durante toda la noche.</p></div>
+    <div class="zrow z2 fx f3"><div class="zico"><svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="#FF7A59" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 30h4M18 30h12M40 30h2M4 30v-8a2 2 0 0 1 2-2h22l6-6h6a4 4 0 0 1 4 4v12"/><circle cx="13" cy="32" r="3.5"/><circle cx="35" cy="32" r="3.5"/></svg></div><h3>Gastronomía</h3><p>Foodtrucks, cocina y productores locales.</p></div>
+    <div class="zrow z3 fx f4"><div class="zico"><svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="#FF5E7D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="17" cy="16" r="6"/><circle cx="32" cy="18" r="5"/><path d="M6 40c0-6 5-10 11-10s11 4 11 10M28 40c0-5 4-8 8-8s6 3 6 8"/></svg></div><h3>Encuentro</h3><p>Un espacio para caminar, conversar y permanecer frente al mar.</p></div>
+    <div class="zrow z4 fx f4"><div class="zico"><svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="#B56BA8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle class="ringx" cx="24" cy="24" r="14" opacity=".5"/><path d="M24 10a8 8 0 0 1 5 14q-2 2-2 4h-6q0-2-2-4a8 8 0 0 1 5-14Z"/><path d="M21 34h6"/></svg></div><h3>Intervenciones especiales</h3><p>Experiencias artísticas vinculadas a la luz, la percepción y el espectáculo.</p></div>
+    <div class="zrow z5 fx f5"><div class="zico"><svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="#F2EFEA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 40V22M14 28l16-8v18l-16-8Z"/><path d="M34 16a10 10 0 0 1 0 16" opacity=".6"/><path d="M39 11a16 16 0 0 1 0 26" opacity=".35"/></svg></div><h3>Gran cierre</h3><p>Un artista o banda invitada como último momento de la noche.</p></div>
+  </div>
+</section>
+
+<!-- ══════════ 09 · AUDIENCIA ══════════ -->
+<section class="slide plain" data-label="Audiencia">
+  <div class="ghost">09</div>
+  <div class="cols" style="grid-template-columns:1.1fr .9fr">
+    <div>
+      <div class="eyebrow fx">El público</div>
+      <h2 class="fx f2" style="margin-bottom:8px">Dos audiencias</h2>
+      <p class="lead fx f2" style="max-width:880px">ROCALIGHTS ocurre en la costa y, al mismo tiempo, en las pantallas: la experiencia física se convierte en <strong>contenido</strong>.</p>
+      <div class="g3 fx f3" style="gap:30px;margin-top:40px">
+        <div class="item"><h3 style="color:var(--sand);margin-bottom:8px">Presencial</h3><p>Público local y veraneante de Santo Domingo en febrero. Familiar y con buen nivel de consumo.</p></div>
+        <div class="item"><h3 style="color:var(--pink);margin-bottom:8px">Digital</h3><p>Quienes descubren el evento por sus imágenes: mapping, sunset, mar y miles de cámaras.</p></div>
+        <div class="item"><h3 style="color:var(--lila2);margin-bottom:8px">Amplificación</h3><p>Asistentes, artistas, creadores, prensa, municipio y sponsors.</p></div>
       </div>
-      <div class="calwrap fx f3">
-        <div class="calhead"><b>febrero 2027</b><span>calendario tentativo</span></div>
-        <div class="cal">
-          <div class="h">l</div><div class="h">m</div><div class="h">x</div><div class="h">j</div><div class="h">v</div><div class="h">s</div><div class="h">d</div>
-          <div class="d">1</div><div class="d">2</div><div class="d">3</div><div class="d">4</div><div class="d">5</div><div class="d">6</div><div class="d">7</div>
-          <div class="d">8</div><div class="d">9</div><div class="d">10</div><div class="d wA">11</div><div class="d wA">12</div><div class="d wA">13</div><div class="d wA">14</div>
-          <div class="d">15</div><div class="d">16</div><div class="d">17</div><div class="d wB">18</div><div class="d wB">19</div><div class="d wB">20</div><div class="d wB">21</div>
-          <div class="d">22</div><div class="d">23</div><div class="d">24</div><div class="d">25</div><div class="d">26</div><div class="d">27</div><div class="d">28</div>
-        </div>
-        <div class="legend">
-          <span><i class="lA"></i>11–14 feb · exposición a</span>
-          <span><i class="lB"></i>18–21 feb · exposición b</span>
-        </div>
+      <div class="fx f4" style="margin-top:38px;border-top:1px solid var(--line);padding-top:28px;display:flex;gap:44px;align-items:center">
+        <p class="kicker" style="font-size:29px;flex:1"><span class="grad">Calidad de experiencia</span> antes que saturación: buena asistencia, seguridad, comodidad y tiempo de permanencia.</p>
       </div>
     </div>
-  </section>
+    <div class="phones fx f5">
+      <div class="phone ph1"><video autoplay muted loop playsinline src="https://i.imgur.com/5l6Jfyq.mp4"></video></div>
+      <div class="phone ph2"><video autoplay muted loop playsinline src="https://i.imgur.com/dJ8mlsP.mp4"></video></div>
+      <div class="phone ph3"><video autoplay muted loop playsinline src="https://i.imgur.com/3Y6am5m.mp4"></video></div>
+    </div>
+  </div>
+</section>
 
-  <!-- 07 · mapping generativo -->
-  <section class="slide tintP" data-num="07">
-    <div class="inner">
-      <div class="eyebrow fx">La técnica · posibilidades</div>
-      <h2 class="fx">Mapping <em>generativo</em>:<br>luz que se crea en tiempo real</h2>
-      <p class="lead fx" style="font-size:15px;max-width:720px">A diferencia de un video pregrabado, la obra se <strong>programa y se crea en vivo</strong> — y eso abre un mundo de posibilidades: cada punto del circuito puede diseñarse para dialogar con la música, con el público o con el propio entorno.</p>
-      <div class="mapviz fx">
-        <svg viewBox="0 0 1100 380" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <clipPath id="rockclip">
-              <path d="M620 340 L640 210 L680 165 L706 200 L735 130 L785 108 L818 165 L852 140 L895 185 L925 152 L968 225 L995 205 L1030 340 Z"/>
-            </clipPath>
-          </defs>
-          <g fill="#F2EFEA">
-            <circle class="tw" cx="700" cy="60" r="2"/>
-            <circle class="tw" cx="800" cy="38" r="1.5"/>
-            <circle class="tw" cx="900" cy="70" r="2"/>
-            <circle class="tw" cx="990" cy="45" r="1.5"/>
-            <circle class="tw" cx="1050" cy="110" r="2"/>
-          </g>
-          <g font-family="Inter,sans-serif">
-            <circle class="ringx" cx="90" cy="70" r="30" fill="none" stroke="#F2C27B" stroke-width="1"/>
-            <circle cx="90" cy="70" r="30" fill="rgba(242,194,123,.08)" stroke="#F2C27B" stroke-width="1.5"/>
-            <g stroke="#F2C27B" stroke-width="2" stroke-linecap="round">
-              <line x1="78" y1="64" x2="78" y2="78"><animate attributeName="y1" values="64;70;60;64" dur="1s" repeatCount="indefinite"/></line>
-              <line x1="86" y1="58" x2="86" y2="82"><animate attributeName="y1" values="58;66;54;58" dur="1s" begin=".15s" repeatCount="indefinite"/></line>
-              <line x1="94" y1="62" x2="94" y2="80"><animate attributeName="y1" values="62;70;56;62" dur="1s" begin=".3s" repeatCount="indefinite"/></line>
-              <line x1="102" y1="66" x2="102" y2="76"><animate attributeName="y1" values="66;72;60;66" dur="1s" begin=".45s" repeatCount="indefinite"/></line>
-            </g>
-            <text x="140" y="66" fill="#F2EFEA" font-size="15" font-weight="600">la música</text>
-            <text x="140" y="86" fill="rgba(242,239,234,.55)" font-size="12.5">el beat puede convertirse en luz</text>
-            <circle class="ringx" cx="90" cy="190" r="30" fill="none" stroke="#FF7A59" stroke-width="1" style="animation-delay:.8s"/>
-            <circle cx="90" cy="190" r="30" fill="rgba(255,122,89,.08)" stroke="#FF7A59" stroke-width="1.5"/>
-            <g fill="none" stroke="#FF7A59" stroke-width="2" stroke-linecap="round">
-              <circle cx="90" cy="190" r="5" fill="#FF7A59" stroke="none"/>
-              <circle cx="90" cy="190" r="12" opacity=".7"><animate attributeName="r" values="9;15;9" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".8;.2;.8" dur="2s" repeatCount="indefinite"/></circle>
-              <circle cx="90" cy="190" r="19" opacity=".35"><animate attributeName="r" values="15;22;15" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values=".4;.1;.4" dur="2s" repeatCount="indefinite"/></circle>
-            </g>
-            <text x="140" y="186" fill="#F2EFEA" font-size="15" font-weight="600">el tacto</text>
-            <text x="140" y="206" fill="rgba(242,239,234,.55)" font-size="12.5">sensores que responden al gesto del público</text>
-            <circle class="ringx" cx="90" cy="310" r="30" fill="none" stroke="#FF5E7D" stroke-width="1" style="animation-delay:1.6s"/>
-            <circle cx="90" cy="310" r="30" fill="rgba(255,94,125,.08)" stroke="#FF5E7D" stroke-width="1.5"/>
-            <g fill="#FF5E7D">
-              <circle cx="78" cy="310" r="4"><animate attributeName="cx" values="78;84;78" dur="1.8s" repeatCount="indefinite"/></circle>
-              <circle cx="90" cy="304" r="4"><animate attributeName="cx" values="90;96;90" dur="1.8s" begin=".3s" repeatCount="indefinite"/></circle>
-              <circle cx="98" cy="316" r="4"><animate attributeName="cx" values="98;104;98" dur="1.8s" begin=".6s" repeatCount="indefinite"/></circle>
-            </g>
-            <text x="140" y="306" fill="#F2EFEA" font-size="15" font-weight="600">el movimiento</text>
-            <text x="140" y="326" fill="rgba(242,239,234,.55)" font-size="12.5">la multitud puede dibujar la obra al moverse</text>
-          </g>
-          <path class="flow" d="M340 70 C 460 70, 500 140, 610 185" fill="none" stroke="#F2C27B" stroke-width="1.8" opacity=".65"/>
-          <path class="flow" d="M340 190 C 460 190, 500 200, 610 215" fill="none" stroke="#FF7A59" stroke-width="1.8" opacity=".65" style="animation-delay:.4s"/>
-          <path class="flow" d="M340 310 C 460 310, 500 260, 610 240" fill="none" stroke="#FF5E7D" stroke-width="1.8" opacity=".65" style="animation-delay:.8s"/>
-          <path d="M620 340 L640 210 L680 165 L706 200 L735 130 L785 108 L818 165 L852 140 L895 185 L925 152 L968 225 L995 205 L1030 340 Z" fill="#F2EFEA"/>
-          <g clip-path="url(#rockclip)" fill="none" stroke-width="3">
-            <path class="wave" stroke="#F2C27B" d="M600 190 q25 -14 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0"/>
-            <path class="wave w2" stroke="#FF7A59" d="M600 225 q25 -14 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0"/>
-            <path class="wave w3" stroke="#FF5E7D" d="M600 260 q25 -14 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0"/>
-            <path class="wave w4" stroke="#B56BA8" d="M600 295 q25 -14 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0"/>
-          </g>
-          <g stroke="#6B4C9A" stroke-width="2" fill="none" opacity=".8">
-            <path d="M620 358 q22 -10 44 0 t44 0 t44 0 t44 0 t44 0 t44 0 t44 0 t44 0 t44 0"/>
-          </g>
-          <text x="825" y="378" text-anchor="middle" fill="rgba(242,239,234,.45)" font-size="12" font-family="Inter,sans-serif">posibilidades programables: cada noche puede ser una obra única e irrepetible</text>
-        </svg>
+<!-- ══════════ 10 · DIFUSIÓN ══════════ -->
+<section class="slide tintK" data-label="Difusión">
+  <div class="ghost">10</div>
+  <div class="eyebrow fx">Diseñado para compartirse</div>
+  <h2 class="fx f2" style="margin-bottom:8px">Difusión</h2>
+  <p class="sub fx f2">Dos noches. Muchas semanas de conversación.</p>
+  <div class="g3" style="margin-top:46px;gap:32px">
+    <div class="card k1 fx f3" style="position:relative">
+      <div class="icobox"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#F2C27B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1Z"/><path d="M16.5 9a4 4 0 0 1 0 6" opacity=".7"/><path d="M19.5 6a8 8 0 0 1 0 12" opacity=".4"/></svg></div>
+      <h3 style="color:var(--sand);font-size:30px;margin-bottom:14px">Antes</h3>
+      <p style="line-height:1.7">Campaña de lanzamiento · artistas y programación · contenido editorial · redes · prensa · vía pública · contenido de sponsors</p>
+    </div>
+    <div class="card k3 fx f4" style="position:relative">
+      <div class="icobox"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#FF5E7D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.5" width="10" height="19" rx="3"/><path class="beat" d="M12 9.5c-1.3-1.4-3.5-.8-3.5 1.1 0 1.4 1.8 2.7 3.5 4.1 1.7-1.4 3.5-2.7 3.5-4.1 0-1.9-2.2-2.5-3.5-1.1Z" fill="#FF5E7D" stroke="none"/></svg></div>
+      <h3 style="color:var(--pink);font-size:30px;margin-bottom:14px">Durante</h3>
+      <p style="line-height:1.7">Contenido de asistentes (UGC) · reels y stories · creadores · registro profesional · contenido con artistas · cobertura del encendido</p>
+    </div>
+    <div class="card k4 fx f5" style="position:relative">
+      <div class="icobox"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#d9a3cf" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="14" height="12" rx="3"/><path d="m16.5 11 5-3v8l-5-3z"/></svg></div>
+      <h3 style="color:var(--lila2);font-size:30px;margin-bottom:14px">Después</h3>
+      <p style="line-height:1.7">Aftermovie · fotografía · clips de artistas · contenido de marca · resultados · memoria de la edición · camino a 2028</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 11 · IMPACTO ══════════ -->
+<section class="slide light" data-label="Impacto">
+  <div class="ghost">11</div>
+  <div class="eyebrow fx">Impacto</div>
+  <h2 class="fx f2" style="margin-bottom:8px">Qué gana Santo Domingo</h2>
+  <p class="fx f2" style="font-size:30px;font-weight:300;color:rgba(29,34,75,.7)">Un evento que genera valor más allá de dos noches.</p>
+  <div class="imp">
+    <div class="fx f3"><span class="plus">+</span><h3>Cultura</h3><p>Una nueva plataforma para artistas visuales, audiovisuales y músicos.</p></div>
+    <div class="fx f3"><span class="plus">+</span><h3>Turismo</h3><p>Una experiencia especial en uno de los momentos más importantes del verano.</p></div>
+    <div class="fx f4"><span class="plus">+</span><h3>Economía local</h3><p>Mayor permanencia y actividad en gastronomía, comercio y servicios.</p></div>
+    <div class="fx f4"><span class="plus">+</span><h3>Patrimonio</h3><p>Una nueva manera de mirar y poner en valor el paisaje costero sin transformarlo.</p></div>
+    <div class="fx f5"><span class="plus">+</span><h3>Posicionamiento</h3><p>Una experiencia contemporánea, visual y reconocible asociada a la comuna.</p></div>
+    <div class="fx f5"><span class="plus">+</span><h3>Marca</h3><p>El nacimiento de una propiedad cultural que puede crecer año tras año.</p></div>
+  </div>
+</section>
+
+<!-- ══════════ 12 · MERCADO PAGO x ROCALIGHTS ══════════ -->
+<section class="slide sunset" data-label="Mercado Pago x ROCALIGHTS">
+  <div class="ghost" style="-webkit-text-stroke:1px rgba(242,239,234,.2)">12</div>
+  <div class="cols" style="grid-template-columns:1fr 1fr;gap:80px">
+    <div>
+      <div class="eyebrow fx">La oportunidad</div>
+      <div class="fx f2" style="display:flex;align-items:center;gap:30px;margin-bottom:34px">
+        <img src="https://i.imgur.com/ZsMOsZd.png" alt="Mercado Pago" style="height:86px;object-fit:contain">
+        <span style="font-size:44px;font-weight:200;color:rgba(242,239,234,.5)">×</span>
+        <img src="https://i.imgur.com/STRghPA.png" alt="ROCALIGHTS" style="height:64px;object-fit:contain">
+      </div>
+      <p class="lead fx f3" style="color:rgba(242,239,234,.85);max-width:820px">Una alianza natural entre tecnología, experiencia y comercio. ROCALIGHTS reúne en un mismo lugar:</p>
+      <div class="chips fx f4" style="margin-top:28px">
+        <span style="border-color:rgba(242,239,234,.4);color:#F2EFEA">tecnología</span>
+        <span style="border-color:rgba(242,239,234,.4);color:#F2EFEA">cultura</span>
+        <span style="border-color:rgba(242,239,234,.4);color:#F2EFEA">entretenimiento</span>
+        <span style="border-color:rgba(242,239,234,.4);color:#F2EFEA">gastronomía</span>
+        <span style="border-color:rgba(242,239,234,.4);color:#F2EFEA">comercio local</span>
+        <span style="border-color:rgba(242,239,234,.4);color:#F2EFEA">personas</span>
       </div>
     </div>
-  </section>
+    <div class="mplist fx f5">
+      <p>Una marca tecnológica dentro de una <b style="font-weight:600">experiencia tecnológica</b>.</p>
+      <p>Una plataforma de pagos dentro de un <b style="font-weight:600">ecosistema de consumo</b>.</p>
+      <p>Una marca masiva dentro de un evento diseñado para <b style="font-weight:600">generar conversación</b>.</p>
+      <p>Un partner presente desde la primera edición.</p>
+    </div>
+  </div>
+</section>
 
-  <!-- 08 · videos verticales -->
-  <section class="slide" data-num="08">
-    <div class="inner cols c2" style="grid-template-columns:.85fr 1.15fr">
-      <div>
-        <div class="eyebrow fx">En movimiento</div>
-        <h2 class="fx">Lo que podemos<br><em>hacer</em></h2>
-        <p class="lead fx">Mapping generativo sobre roca, en formato vertical: el lenguaje nativo de redes sociales. Cada punto del circuito es, al mismo tiempo, contenido listo para compartir.</p>
-      </div>
-      <div class="phones fx f3">
-        <div class="phone ph1"><video autoplay muted loop playsinline src="https://i.imgur.com/5l6Jfyq.mp4"></video></div>
-        <div class="phone ph2"><video autoplay muted loop playsinline src="https://i.imgur.com/dJ8mlsP.mp4"></video></div>
-        <div class="phone ph3"><video autoplay muted loop playsinline src="https://i.imgur.com/3Y6am5m.mp4"></video></div>
+<!-- ══════════ 13 · QUÉ GANA MERCADO PAGO ══════════ -->
+<section class="slide plain" data-label="Qué gana la marca">
+  <div class="ghost">13</div>
+  <div class="eyebrow fx">¿Qué gana Mercado Pago?</div>
+  <h2 class="fx f2" style="margin-bottom:34px">Más que visibilidad</h2>
+  <div class="g3" style="gap:26px">
+    <div class="card k1 fx f3" style="position:relative"><span class="cnum">01</span>
+      <div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#F2C27B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+      <h3 style="color:var(--sand)">Visibilidad protagonista</h3><p>Antes, durante y después: campaña, redes, escenario, vía pública, señalética, prensa y registro audiovisual.</p></div>
+    <div class="card k1 fx f3" style="position:relative"><span class="cnum">02</span>
+      <div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#F2C27B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 0 1 0-5.7l2-2a4 4 0 0 1 5.7 5.7l-1 1"/><path d="M15 12a4 4 0 0 1 0 5.7l-2 2A4 4 0 0 1 7.3 14l1-1"/></svg></div>
+      <h3 style="color:var(--sand)">Asociación de marca</h3><p>Vinculación con una experiencia contemporánea que combina tecnología, creatividad, música y cultura.</p></div>
+    <div class="card k2 fx f4" style="position:relative"><span class="cnum">03</span>
+      <div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF7A59" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.8 19c0-3.2 2.8-5.4 6.2-5.4s6.2 2.2 6.2 5.4"/><circle cx="17.5" cy="9.5" r="2.4"/><path d="M16 14.4c3.2-.4 5.5 1.6 5.5 4.6"/></svg></div>
+      <h3 style="color:var(--orange)">Audiencia en temporada</h3><p>Contacto directo con residentes y veraneantes de Santo Domingo en pleno verano.</p></div>
+    <div class="card k2 fx f4" style="position:relative"><span class="cnum">04</span>
+      <div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF7A59" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="3"/><path d="M2.5 10h19M6 14.5h4"/></svg></div>
+      <h3 style="color:var(--orange)">Uso real del producto</h3><p>Herramientas de pago operando en foodtrucks, comercios y emprendimientos locales participantes.</p></div>
+    <div class="card k3 fx f5" style="position:relative"><span class="cnum">05</span>
+      <div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF5E7D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 13.5 13 21a2 2 0 0 1-2.8 0l-7-7a2 2 0 0 1-.6-1.6l.5-6A2 2 0 0 1 5 4.6l6-.5a2 2 0 0 1 1.6.6l7 7a2 2 0 0 1 0 2.8Z"/><circle cx="8.2" cy="8.2" r="1.4"/></svg></div>
+      <h3 style="color:var(--pink)">Beneficios para usuarios</h3><p>Promociones, descuentos o experiencias especiales diseñadas en conjunto.</p></div>
+    <div class="card k3 fx f5" style="position:relative"><span class="cnum">06</span>
+      <div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF5E7D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="m9.5 9 5 3-5 3z" fill="#FF5E7D" stroke="none"/></svg></div>
+      <h3 style="color:var(--pink)">Contenido</h3><p>Un entorno extremadamente visual para piezas propias, colaboraciones y cobertura con artistas.</p></div>
+  </div>
+  <div class="bchips fx f6" style="margin-top:30px">
+    <div class="bchip bc4"><span class="bic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#d9a3cf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-8M22 20v-4"/></svg></span>medición y reporte de resultados</div>
+    <div class="bchip bc5"><span class="bic"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#F2EFEA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.4 6.2L21 11l-6.6 1.8L12 19l-2.4-6.2L3 11l6.6-1.8z"/></svg></span>ser parte de la primera edición</div>
+  </div>
+</section>
+
+<!-- ══════════ 14 · EL ACTIVO 21:00 ══════════ -->
+<section class="slide deep" data-label="El activo · 21:00">
+  <div class="ghost">14</div>
+  <div class="pulsering"></div>
+  <div class="cols" style="grid-template-columns:1fr 1fr;gap:80px">
+    <div>
+      <div class="eyebrow fx">El gran activo de marca</div>
+      <p class="bignum fx f2">21:00</p>
+      <p class="kicker fx f3" style="margin-top:22px;font-size:35px">El momento en que la costa se enciende.</p>
+      <div class="fx f4" style="display:flex;gap:16px;margin-top:34px;align-items:center;flex-wrap:wrap">
+        <span class="chips" style="display:contents"></span>
+        <div class="bchip bc1" style="font-size:21px"><span class="bic" style="width:38px;height:38px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#F2C27B" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></svg></span>cuenta regresiva</div>
+        <div class="bchip bc2" style="font-size:21px"><span class="bic" style="width:38px;height:38px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#FF7A59" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="2.6"/><circle cx="15.5" cy="10" r="2.2"/><path d="M3 19c0-2.8 2.2-4.6 5-4.6S13 16.2 13 19M14 14.6c2.8-.3 5 1.5 5 4.4"/></svg></span>el público espera</div>
+        <div class="bchip bc3" style="font-size:21px"><span class="bic" style="width:38px;height:38px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#FF5E7D" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a6 6 0 0 1 3.6 10.8c-1 .8-1.6 1.6-1.6 2.6h-4c0-1-.6-1.8-1.6-2.6A6 6 0 0 1 12 4Z"/><path d="M10 20h4"/></svg></span>se encienden las obras</div>
       </div>
     </div>
-  </section>
-
-  <!-- 09 · así se vería -->
-  <section class="slide tintK" data-num="09">
-    <div class="inner">
-      <div class="eyebrow fx">La postal</div>
-      <h2 class="fx">Así se vería una noche<br><em>de Roca Lights</em></h2>
-      <div class="renders fx">
-        <div class="imgframe"><img src="https://i.imgur.com/bjBSD3I.png" alt="Visualización del evento 1"></div>
-        <div class="imgframe"><img src="https://i.imgur.com/Ccq9B8B.png" alt="Visualización del evento 2"></div>
-        <div class="imgframe"><img src="https://i.imgur.com/Yr5neML.png" alt="Visualización del evento 3"></div>
+    <div>
+      <p class="fx f4" style="font-size:21px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sand);margin-bottom:18px">Propuesta conceptual</p>
+      <p class="fx f4" style="font-size:52px;font-weight:700;letter-spacing:-.02em;line-height:1.12;margin-bottom:30px">Mercado Pago<br>enciende ROCALIGHTS.</p>
+      <p class="body fx f5" style="font-size:25px;margin-bottom:22px">Una propiedad que puede vivir en:</p>
+      <div class="chips fx f5" style="margin-bottom:32px">
+        <span>redes</span><span>escenario</span><span>contenido</span><span>prensa</span><span>registro audiovisual</span><span>menciones</span><span>cuenta regresiva</span><span>campaña</span><span>aftermovie</span>
       </div>
-      <p class="caption fx">Visualizaciones referenciales del circuito y la zona festival.</p>
+      <p class="fx f6" style="border-top:1px solid var(--line);padding-top:26px;font-size:28px;font-weight:400;line-height:1.4">El sponsor no solamente aparece en el evento: puede <span style="color:var(--sand)">apropiarse de uno de sus momentos más recordados</span>.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 10 · zona festival -->
-  <section class="slide" data-num="10">
-    <div class="inner">
-      <div class="eyebrow fx">Zona festival</div>
-      <h2 class="fx">Un panorama familiar,<br><em>gratuito y al aire libre</em></h2>
-      <div class="zlist">
-        <div class="zrow z1 fx">
-          <div class="zico"><div class="eq"><i></i><i></i><i></i><i></i><i></i></div></div>
-          <h3>Música</h3>
-          <p>DJ set y curatoría musical desde el atardecer hasta el cierre, pensada para todas las edades.</p>
-        </div>
-        <div class="zrow z2 fx f2">
-          <div class="zico">
-            <svg class="steam" viewBox="0 0 48 48" width="36" height="36" fill="none" stroke="#FF7A59" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path class="s" d="M18 12 q2 -3 0 -6"/>
-              <path class="s" d="M26 12 q2 -3 0 -6"/>
-              <path d="M6 30 h4 M18 30 h12 M40 30 h2 M4 30 v-8 a2 2 0 0 1 2 -2 h22 l6 -6 h6 a4 4 0 0 1 4 4 v12"/>
-              <circle cx="13" cy="32" r="3.5"/><circle cx="35" cy="32" r="3.5"/>
-            </svg>
-          </div>
-          <h3>Foodtrucks</h3>
-          <p>Patio gastronómico con prioridad para cocina y productores locales de la comuna.</p>
-        </div>
-        <div class="zrow z3 fx f3">
-          <div class="zico">
-            <svg class="bulb" viewBox="0 0 48 48" width="36" height="36" fill="none" stroke="#FF5E7D" stroke-width="2.2" stroke-linecap="round">
-              <circle class="halo" cx="24" cy="20" r="16" fill="rgba(255,94,125,.25)" stroke="none"/>
-              <path d="M24 8 a10 10 0 0 1 6 18 q-2 2 -2 5 h-8 q0 -3 -2 -5 a10 10 0 0 1 6 -18 Z"/>
-              <path d="M20 36 h8 M21 40 h6"/>
-              <g class="ray"><path d="M24 1 v3 M40 8 l-2.2 2.2 M8 8 l2.2 2.2 M45 22 h-3 M6 22 H3"/></g>
-            </svg>
-          </div>
-          <h3>Expositores lumínicos</h3>
-          <p>Artistas y estudios de arte lumínico con obras e instalaciones a escala humana.</p>
-        </div>
-        <div class="zrow z4 fx f4">
-          <div class="zico">
-            <svg viewBox="0 0 48 48" width="36" height="36" fill="#B56BA8">
-              <path class="spark" d="M24 6 l4 14 14 4 -14 4 -4 14 -4 -14 -14 -4 14 -4 Z"/>
-              <path class="spark2" d="M38 8 l1.5 5 5 1.5 -5 1.5 -1.5 5 -1.5 -5 -5 -1.5 5 -1.5 Z" opacity=".7"/>
-            </svg>
-          </div>
-          <h3>Marcas y comunidad</h3>
-          <p>Activaciones de marcas aliadas y espacio para organizaciones locales.</p>
-        </div>
+<!-- ══════════ 15 · INTEGRACIÓN ══════════ -->
+<section class="slide tintP" data-label="Integración">
+  <div class="ghost">15</div>
+  <div class="eyebrow fx">Mercado Pago dentro de la experiencia</div>
+  <h2 class="fx f2" style="margin-bottom:8px">Integración</h2>
+  <p class="sub fx f2">Del branding a la utilidad. La alianza se construye en capas.</p>
+  <div class="g4" style="gap:26px;margin-top:42px">
+    <div class="card k1 fx f3"><div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#F2C27B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13.5H11L10 22l8.5-11.5H12Z"/></svg></div><h3 style="font-size:24px;color:var(--sand)">El Encendido</h3><p style="font-size:20px">Presentación del momento principal de ROCALIGHTS.</p></div>
+    <div class="card k1 fx f3"><div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#F2C27B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="4.5"/><path d="M2 21c1.5-4 5.5-6 10-6s8.5 2 10 6"/></svg></div><h3 style="font-size:24px;color:var(--sand)">Sunset Stage</h3><p style="font-size:20px">Naming o presentación del escenario musical.</p></div>
+    <div class="card k2 fx f4"><div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF7A59" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3v8a3 3 0 0 0 6 0V3M7 11v10M17 3c-1.5 2-2 4-2 6h4c0-2-.5-4-2-6ZM17 9v12"/></svg></div><h3 style="font-size:24px;color:var(--orange)">Gastronomía</h3><p style="font-size:20px">Soluciones de pago en foodtrucks y comercios participantes.</p></div>
+    <div class="card k2 fx f4"><div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF7A59" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m7 17 10-10"/><circle cx="8" cy="8" r="2"/><circle cx="16" cy="16" r="2"/><rect x="2.5" y="2.5" width="19" height="19" rx="4"/></svg></div><h3 style="font-size:24px;color:var(--orange)">Beneficios</h3><p style="font-size:20px">Descuentos o promociones especiales para usuarios.</p></div>
+    <div class="card k3 fx f5"><div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF5E7D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20V9l9-6 9 6v11a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg></div><h3 style="font-size:24px;color:var(--pink)">Experiencia de marca</h3><p style="font-size:20px">Espacio propio diseñado dentro de la estética del festival.</p></div>
+    <div class="card k3 fx f5"><div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#FF5E7D" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="m9.5 9 5 3-5 3z" fill="#FF5E7D" stroke="none"/></svg></div><h3 style="font-size:24px;color:var(--pink)">Contenido</h3><p style="font-size:20px">Piezas digitales, artistas, creadores y contenidos especiales.</p></div>
+    <div class="card k4 fx f6"><div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#d9a3cf" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><h3 style="font-size:24px;color:var(--lila2)">Gran cierre</h3><p style="font-size:20px">Presentación del artista o banda principal.</p></div>
+    <div class="card k4 fx f6"><div class="icobox" style="width:58px;height:58px;border-radius:16px;margin-bottom:16px"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="#d9a3cf" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 4.5 4h15L21 9.5M3 9.5h18M3 9.5V20a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V9.5"/><path d="M8 9.5a4 4 0 0 0 8 0"/></svg></div><h3 style="font-size:24px;color:var(--lila2)">Comercio local</h3><p style="font-size:20px">Acciones con emprendimientos y negocios participantes.</p></div>
+  </div>
+  <p class="tiny fx f6" style="margin-top:34px">Las activaciones específicas se diseñan en conjunto con Mercado Pago y quedan sujetas a factibilidad comercial, técnica y contractual.</p>
+</section>
+
+<!-- ══════════ 16 · SPONSORSHIP ══════════ -->
+<section class="slide deep" data-label="Sponsorship">
+  <div class="ghost">16</div>
+  <div class="eyebrow fx">Modelos de alianza</div>
+  <h2 class="fx f2" style="margin-bottom:6px">Sponsorship</h2>
+  <p class="sub fx f2">Dos maneras de ser parte.</p>
+  <div class="tiers">
+    <div class="tier tierA fx f3" style="position:relative">
+      <span class="tbadge">Nuestra primera opción</span>
+      <h3>Sponsor Principal / Founding Partner</h3>
+      <p class="d">La máxima categoría de asociación. “ROCALIGHTS 2027 presentado por Mercado Pago” o fórmula de naming a acordar.</p>
+      <p class="lab">Incluye, sujeto a negociación</p>
+      <div class="tlist two">
+        <span>máxima jerarquía de marca</span><span>exclusividad de categoría</span>
+        <span>propiedad del Encendido</span><span>presencia protagonista en campaña</span>
+        <span>presencia en Sunset Stage</span><span>integración de producto</span>
+        <span>espacio de activación premium</span><span>beneficios para usuarios</span>
+        <span>cierre presentado por la marca</span><span>presencia en contenidos</span>
+        <span>aftermovie</span><span>reporte completo de resultados</span>
       </div>
     </div>
-  </section>
-
-  <!-- 11 · el sonido -->
-  <section class="slide" data-num="11">
-    <div class="inner">
-      <div class="eyebrow fx">El sonido</div>
-      <h2 class="fx">Dos formatos posibles</h2>
-      <div class="split fx">
-        <div class="side sideA">
-          <span class="bigL">a</span>
-          <h3>Música central</h3>
-          <p>Un escenario con DJ set o músicos en vivo como corazón sonoro; el circuito se recorre de forma más contemplativa.</p>
-          <svg viewBox="0 0 300 40" fill="none">
-            <path class="flow" d="M0 20 q15 -16 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" stroke="#F2C27B" stroke-width="2.5"/>
-          </svg>
-        </div>
-        <div class="side sideB">
-          <span class="bigL">b</span>
-          <h3>Sonido por punto</h3>
-          <p>Cada proyección tiene su propia capa sonora sincronizada con la luz: una experiencia audiovisual completa en cada punto.</p>
-          <svg viewBox="0 0 300 40" fill="none" stroke-width="2">
-            <path class="flow" d="M0 20 q10 -12 20 0 t20 0 t20 0" stroke="#F2C27B"/>
-            <path class="flow" d="M110 20 q10 -12 20 0 t20 0 t20 0" stroke="#FF5E7D" style="animation-delay:.3s"/>
-            <path class="flow" d="M220 20 q10 -12 20 0 t20 0 t20 0" stroke="#B56BA8" style="animation-delay:.6s"/>
-          </svg>
-        </div>
-      </div>
-      <p class="note fx">También es posible un <strong>formato híbrido</strong>: escenario central + sonido propio en los puntos interactivos. Es una definición abierta, a diseñar en conjunto según el lugar y los recursos.</p>
-    </div>
-  </section>
-
-  <!-- 12 · impacto (acento claro) -->
-  <section class="slide light" data-num="12">
-    <div class="inner">
-      <div class="eyebrow fx">El impacto</div>
-      <h2 class="fx" style="font-size:clamp(32px,4.4vw,60px)">Qué gana<br>Santo Domingo</h2>
-      <div class="imp">
-        <div class="fx"><span class="plus">+</span><h3>Turismo</h3><p>Un atractivo de verano que invita a visitar la comuna de noche — y un modelo extensible a otras temporadas.</p></div>
-        <div class="fx f2"><span class="plus">+</span><h3>Economía local</h3><p>Gasto directo en gastronomía, comercio, alojamiento y servicios; empleo temporal en producción.</p></div>
-        <div class="fx f3"><span class="plus">+</span><h3>Patrimonio</h3><p>Puesta en valor del roquerío costero y de la identidad del territorio, sin intervenirlo.</p></div>
-        <div class="fx f4"><span class="plus">+</span><h3>Posicionamiento</h3><p>Una experiencia segura y gratuita para vecinos y visitantes, altamente fotografiable, que proyecta a la comuna a nivel nacional.</p></div>
+    <div class="tier tierB fx f4">
+      <h3>Sponsor Oficial</h3>
+      <p class="d">Una categoría secundaria de participación.</p>
+      <p class="lab">Incluye</p>
+      <div class="tlist">
+        <span>presencia de marca</span><span>espacio de activación</span>
+        <span>campaña y redes</span><span>señalética</span>
+        <span>contenidos acordados</span><span>presencia durante el evento</span>
+        <span>menciones como Sponsor Oficial</span><span>reporte post-evento</span>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 13 · difusión -->
-  <section class="slide tintK" data-num="13">
-    <div class="inner">
-      <div class="eyebrow fx">Difusión y alcance</div>
-      <h2 class="fx">Una campaña que enciende<br><em>antes del evento</em></h2>
-      <div class="fest">
-        <div class="fcard fc3 fx">
-          <div class="icobox">
-            <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="#FF5E7D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="14" y="4" width="20" height="40" rx="4"/>
-              <path class="beat" d="M24 19 c-2.4 -2.6 -6.4 -1.4 -6.4 2 c0 2.6 3.2 5 6.4 7.6 c3.2 -2.6 6.4 -5 6.4 -7.6 c0 -3.4 -4 -4.6 -6.4 -2 Z" fill="#FF5E7D" stroke="none"/>
-              <path d="M21 40 h6"/>
-            </svg>
-          </div>
-          <h3>Redes sociales</h3>
-          <p>Un circuito hecho para compartir: cada visitante genera contenido y amplifica el destino Santo Domingo con #ROCALIGHTS.</p>
+<!-- ══════════ 17 · PRODUCCIÓN Y ESCALA ══════════ -->
+<section class="slide tintO" data-label="Producción">
+  <div class="ghost">17</div>
+  <div class="cols" style="grid-template-columns:1.05fr .95fr;gap:80px">
+    <div>
+      <div class="eyebrow fx">Factibilidad</div>
+      <h2 class="fx f2" style="margin-bottom:8px">Producción</h2>
+      <p class="sub fx f2">No estamos partiendo de una hoja en blanco.</p>
+      <p class="lead fx f3" style="font-size:26px;margin-top:18px">El proyecto cuenta con una primera bajada técnica del sector: <strong>cinco puntos, posiciones de proyección y FOH, distancias y requerimientos eléctricos</strong> (fuentes de 40 y 80 KVA).</p>
+      <div class="fx f4" style="display:flex;gap:26px;margin-top:38px;align-items:stretch">
+        <div style="border-top:1px solid var(--line);padding-top:22px;flex:1">
+          <span style="display:block;font-size:78px;font-weight:800;letter-spacing:-.04em;line-height:1;color:var(--sand)">6.500 m²</span>
+          <p class="body" style="margin-top:12px">Área general de referencia del sector, en superficie bruta.</p>
         </div>
-        <div class="fcard fc1 fx f2">
-          <div class="icobox">
-            <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="#F2C27B" stroke-width="2.2" stroke-linecap="round">
-              <circle cx="24" cy="26" r="4" fill="#F2C27B" stroke="none"/>
-              <path class="arc" d="M16 18 a11 11 0 0 1 16 0"/>
-              <path class="arc arc2" d="M11 13 a18 18 0 0 1 26 0"/>
-              <path class="arc arc3" d="M6 8 a25 25 0 0 1 36 0"/>
-              <path d="M24 30 v12"/>
-            </svg>
-          </div>
-          <h3>Medios</h3>
-          <p>Prensa, TV y media partners: la historia de la primera intervención lumínica sobre rocas de la costa chilena.</p>
-        </div>
-        <div class="fcard fc2 fx f3">
-          <div class="icobox">
-            <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="#FF7A59" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M10 4 v40 M6 44 h8"/>
-              <g class="flagw"><path d="M10 8 h24 q-4 6 0 12 h-24" fill="rgba(255,122,89,.18)"/></g>
-            </svg>
-          </div>
-          <h3>Vía pública</h3>
-          <p>Afiches, pendones y banderas en postes con la gráfica del evento, en la comuna y sus alrededores.</p>
-        </div>
-        <div class="fcard fc4 fx f4">
-          <div class="icobox">
-            <svg viewBox="0 0 48 48" width="40" height="40" fill="none" stroke="#B56BA8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="4" y="14" width="28" height="22" rx="4"/>
-              <path d="M32 22 l12 -6 v16 l-12 -6"/>
-              <circle class="rec" cx="12" cy="21" r="2.6" fill="#FF5E7D" stroke="none"/>
-            </svg>
-          </div>
-          <h3>Registro audiovisual</h3>
-          <p>Aftermovie y fotografía profesional: material para la municipalidad, las marcas y la próxima edición.</p>
+        <div style="border:1px dashed rgba(242,194,123,.5);border-radius:20px;padding:22px 28px;flex:1;display:flex;flex-direction:column;justify-content:center">
+          <p style="font-size:19px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sand);margin-bottom:8px">Aforo operativo</p>
+          <p style="font-size:27px;font-weight:400">Por definir con producción y seguridad</p>
         </div>
       </div>
+      <p class="kicker fx f5" style="margin-top:34px;font-size:28px">El objetivo no es ocupar cada metro cuadrado: <span style="color:var(--sand)">la prioridad es una experiencia segura, cómoda y disfrutable</span>.</p>
     </div>
-  </section>
-
-  <!-- 14 · la campaña -->
-  <section class="slide" data-num="14">
-    <div class="inner">
-      <div class="eyebrow fx">La campaña</div>
-      <h2 class="fx">Así se ve en la calle<br><em>y en redes</em></h2>
-      <div class="mocks fx">
-        <img src="https://i.imgur.com/kqdmZxn.png" alt="Mockup campaña 1">
-        <img src="https://i.imgur.com/wleVUpG.png" alt="Mockup campaña 2">
+    <div class="fx f5">
+      <p style="font-size:20px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,239,234,.5);margin-bottom:24px">En desarrollo</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 26px">
+        <div class="item" style="padding-top:14px;font-size:25px;font-weight:400">Mapping y proyección</div>
+        <div class="item" style="padding-top:14px;font-size:25px;font-weight:400">Energía</div>
+        <div class="item" style="padding-top:14px;font-size:25px;font-weight:400">FOH</div>
+        <div class="item" style="padding-top:14px;font-size:25px;font-weight:400">Escenario</div>
+        <div class="item" style="padding-top:14px;font-size:25px;font-weight:400">Circulaciones</div>
+        <div class="item" style="padding-top:14px;font-size:25px;font-weight:400">Seguridad</div>
+        <div class="item" style="padding-top:14px;font-size:25px;font-weight:400">Aforo</div>
+        <div class="item" style="padding-top:14px;font-size:25px;font-weight:400">Accesos</div>
+        <div class="item" style="padding-top:14px;font-size:25px;font-weight:400">Gastronomía</div>
+        <div class="item" style="padding-top:14px;font-size:25px;font-weight:400">Servicios</div>
       </div>
-      <p class="caption fx" style="text-align:center">Mockups referenciales de la campaña gráfica.</p>
+      <p class="tiny fx f6" style="margin-top:30px">La visión está definida. Ahora comienza el desarrollo técnico de la primera edición.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 15 · alianzas -->
-  <section class="slide deep" data-num="15">
-    <div class="inner">
-      <div class="eyebrow fx">Alianzas</div>
-      <h2 class="fx">Un espacio para marcas<br>e <em>instituciones</em></h2>
-      <p class="lead fx">Auspicios integrados a la estética del evento, partners gastronómicos y tecnológicos, medios asociados y fondos públicos de cultura y turismo.</p>
-      <div class="tierline fx">
-        <div>
-          <svg class="tico" viewBox="0 0 36 36" width="30" height="30" fill="none" stroke="#F2C27B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3 l4.6 9.3 10.4 1.5 -7.5 7.3 1.8 10.3 -9.3 -4.9 -9.3 4.9 1.8 -10.3 -7.5 -7.3 10.4 -1.5 Z"/></svg>
-          <h3>Marca principal</h3><p>Presenta el evento y el encendido inaugural.</p>
-        </div>
-        <div>
-          <svg class="tico" viewBox="0 0 36 36" width="30" height="30" fill="none" stroke="#FF7A59" stroke-width="2" stroke-linecap="round"><circle cx="18" cy="18" r="5"/><circle cx="18" cy="18" r="11" opacity=".6"/><circle cx="18" cy="18" r="16" opacity=".3"/></svg>
-          <h3>Marcas aliadas</h3><p>Asociadas a puntos del circuito o zonas del festival.</p>
-        </div>
-        <div>
-          <svg class="tico" viewBox="0 0 36 36" width="30" height="30" fill="none" stroke="#FF5E7D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 26 l8 -8 6 6 10 -12 M20 12 h8 v8"/></svg>
-          <h3>Partners y medios</h3><p>Gastronomía, tecnología, difusión y cobertura.</p>
-        </div>
-        <div>
-          <svg class="tico" viewBox="0 0 36 36" width="30" height="30" fill="none" stroke="#B56BA8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 30 V14 l12 -8 12 8 v16 M14 30 v-8 h8 v8"/></svg>
-          <h3>Fondos públicos</h3><p>Cultura, turismo y desarrollo territorial.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- ══════════ 18 · EL LUGAR PRIMERO ══════════ -->
+<section class="slide light" data-label="Producción responsable">
+  <div class="ghost">18</div>
+  <div class="eyebrow fx">Producción responsable</div>
+  <h2 class="fx f2" style="margin-bottom:8px">El lugar primero</h2>
+  <p class="fx f2" style="font-size:29px;font-weight:300;color:rgba(29,34,75,.7);max-width:1100px">Cuidar el paisaje es parte de ROCALIGHTS: una intervención temporal y reversible.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px 26px;margin-top:44px">
+    <div class="chk fx f3"><svg viewBox="0 0 36 36" width="36" height="36" fill="none" stroke="#F2C27B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><circle cx="18" cy="18" r="15"/><path d="M11 18.5l5 5 9-10"/></svg><div><h3>Cero intervención innecesaria</h3><p>El mapping usa el paisaje como soporte, sin transformarlo permanentemente.</p></div></div>
+    <div class="chk fx f3"><svg viewBox="0 0 36 36" width="36" height="36" fill="none" stroke="#FF7A59" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><circle cx="18" cy="18" r="15"/><path d="M11 18.5l5 5 9-10"/></svg><div><h3>Seguridad y accesos</h3><p>Diseño de circulaciones, aforos, delimitaciones y operación.</p></div></div>
+    <div class="chk fx f4"><svg viewBox="0 0 36 36" width="36" height="36" fill="none" stroke="#FF5E7D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><circle cx="18" cy="18" r="15"/><path d="M11 18.5l5 5 9-10"/></svg><div><h3>Gestión acústica</h3><p>Programación y sistemas de sonido compatibles con el entorno.</p></div></div>
+    <div class="chk fx f4"><svg viewBox="0 0 36 36" width="36" height="36" fill="none" stroke="#B56BA8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><circle cx="18" cy="18" r="15"/><path d="M11 18.5l5 5 9-10"/></svg><div><h3>Limpieza</h3><p>Gestión de residuos y recuperación completa del espacio.</p></div></div>
+    <div class="chk fx f5" style="grid-column:span 2"><svg viewBox="0 0 36 36" width="36" height="36" fill="none" stroke="#6B4C9A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto"><circle cx="18" cy="18" r="15"/><path d="M11 18.5l5 5 9-10"/></svg><div><h3>Coordinación institucional</h3><p>Producción desarrollada junto a las autoridades y equipos correspondientes.</p></div></div>
+  </div>
+</section>
 
-  <!-- 16 · producción -->
-  <section class="slide light" data-num="16">
-    <div class="inner cols c2" style="grid-template-columns:.9fr 1.1fr;gap:70px">
-      <div>
-        <div class="eyebrow fx">Producción responsable</div>
-        <h2 class="fx">Cuidar el lugar es<br>parte del espectáculo</h2>
-        <p class="lead fx" style="font-size:15px">Un evento pensado desde el respeto por el borde costero: reversible por definición, coordinado con la municipalidad en cada etapa.</p>
+<!-- ══════════ 19 · KPIs ══════════ -->
+<section class="slide plain" data-label="KPIs">
+  <div class="ghost">19</div>
+  <div class="eyebrow fx">Cómo mediremos el resultado</div>
+  <h2 class="fx f2" style="margin-bottom:8px">KPIs</h2>
+  <p class="lead fx f2" style="max-width:1150px">Lo que ocurre también se mide. El Sponsor Principal recibe un reporte post-evento con los principales resultados de la edición.</p>
+  <div class="kpi">
+    <div class="fx f3" style="border-top-color:rgba(242,194,123,.45)"><h3 style="color:var(--sand)"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#F2C27B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3 2.5-5 6-5s6 2 6 5"/><circle cx="17.5" cy="9.5" r="2.2"/><path d="M16 14.4c3-.4 5.5 1.6 5.5 4.6"/></svg>AUDIENCIA</h3><div class="l"><span>Asistencia total</span><span>Aforo y permanencia</span><span>Perfil general de asistentes</span></div></div>
+    <div class="fx f3" style="border-top-color:rgba(255,122,89,.45)"><h3 style="color:var(--orange)"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#FF7A59" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18"/></svg>DIGITAL</h3><div class="l"><span>Alcance e impresiones</span><span>Visualizaciones e interacciones</span><span>UGC generado y menciones</span></div></div>
+    <div class="fx f4" style="border-top-color:rgba(255,94,125,.45)"><h3 style="color:var(--pink)"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#FF5E7D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="m9.5 9 5 3-5 3z" fill="#FF5E7D" stroke="none"/></svg>CONTENIDO</h3><div class="l"><span>Piezas producidas</span><span>Contenido de artistas y creadores</span><span>Registro audiovisual</span></div></div>
+    <div class="fx f4" style="border-top-color:rgba(181,107,168,.5)"><h3 style="color:var(--lila2)"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#d9a3cf" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V5a1 1 0 0 1 1-1h9l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1Z"/><path d="M9 12h6M9 16h4"/></svg>PRENSA</h3><div class="l"><span>Publicaciones</span><span>Cobertura</span><span>Alcance estimado</span></div></div>
+    <div class="fx f5" style="border-top-color:rgba(242,239,234,.3)"><h3 style="color:var(--cream)"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#F2EFEA" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.4 6.2L21 11l-6.6 1.8L12 19l-2.4-6.2L3 11l6.6-1.8z"/></svg>MARCA</h3><div class="l"><span>Exposición y menciones</span><span>Activaciones y participación</span><span>Beneficios utilizados</span></div></div>
+    <div class="fx f5" style="border-top-color:rgba(107,76,154,.6)"><h3 style="color:#a98fd6"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#a98fd6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="19" height="13" rx="3"/><path d="M2.5 10h19M6 14.5h4"/></svg>COMERCIAL</h3><div class="l"><span>Indicadores acordados sobre pagos, comercios y promociones integradas con Mercado Pago.</span></div></div>
+  </div>
+  <p class="tiny fx f6" style="margin-top:34px">Los KPIs definitivos se acuerdan con el sponsor antes del evento.</p>
+</section>
+
+<!-- ══════════ 20 · LA PROPUESTA ══════════ -->
+<section class="slide sunset" data-label="La propuesta">
+  <div class="ghost" style="-webkit-text-stroke:1px rgba(242,239,234,.2)">20</div>
+  <div class="eyebrow fx">La propuesta</div>
+  <h2 class="fx f2" style="margin-bottom:8px">ROCALIGHTS × Mercado Pago</h2>
+  <p class="lead fx f2" style="color:rgba(242,239,234,.86);max-width:1000px">Queremos construir la primera edición juntos. Nuestra primera opción es que Mercado Pago se incorpore como <b style="color:var(--sand);font-weight:600">Sponsor Principal / Founding Partner</b>.</p>
+  <div class="cols" style="grid-template-columns:1.15fr .85fr;gap:64px;margin-top:44px;align-items:center">
+    <div class="moneywrap">
+      <div class="bigpill fx f3">
+        <span class="picon"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#0B0E24" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 13.5 13 21a2 2 0 0 1-2.8 0l-7-7a2 2 0 0 1-.6-1.6l.5-6A2 2 0 0 1 5 4.6l6-.5a2 2 0 0 1 1.6.6l7 7a2 2 0 0 1 0 2.8Z"/><circle cx="8.2" cy="8.2" r="1.5"/></svg></span>
+        <span class="lbl">Aporte<br>buscado</span>
+        <span class="amt">$ por definir</span>
+        <span class="cur">CLP</span>
       </div>
-      <div class="chklist">
-        <div class="chk fx">
-          <svg viewBox="0 0 36 36" width="34" height="34" fill="none" stroke="#F2C27B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle class="ckc" cx="18" cy="18" r="15"/>
-            <path class="ckm" d="M11 18.5 l5 5 9 -10"/>
-          </svg>
-          <div><h3>Cero intervención física</h3><p>Proyección sin anclajes ni alteraciones; al apagar, el paisaje queda intacto.</p></div>
-        </div>
-        <div class="chk fx f2">
-          <svg viewBox="0 0 36 36" width="34" height="34" fill="none" stroke="#FF7A59" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle class="ckc" cx="18" cy="18" r="15"/>
-            <path class="ckm" d="M11 18.5 l5 5 9 -10"/>
-          </svg>
-          <div><h3>Seguridad y accesos</h3><p>Plan de aforos, senderos demarcados y coordinación con seguridad municipal y servicios de emergencia.</p></div>
-        </div>
-        <div class="chk fx f3">
-          <svg viewBox="0 0 36 36" width="34" height="34" fill="none" stroke="#FF5E7D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle class="ckc" cx="18" cy="18" r="15"/>
-            <path class="ckm" d="M11 18.5 l5 5 9 -10"/>
-          </svg>
-          <div><h3>Gestión acústica</h3><p>Niveles y horarios dentro de norma, con sonido direccional de bajo alcance.</p></div>
-        </div>
-        <div class="chk fx f4">
-          <svg viewBox="0 0 36 36" width="34" height="34" fill="none" stroke="#B56BA8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle class="ckc" cx="18" cy="18" r="15"/>
-            <path class="ckm" d="M11 18.5 l5 5 9 -10"/>
-          </svg>
-          <div><h3>Entorno limpio</h3><p>Puntos limpios y aseo post-evento: el borde costero amanece impecable.</p></div>
-        </div>
+      <div class="pillrow fx f4">
+        <div class="minipill"><span class="l">Presupuesto total</span><span class="v">$ por definir</span></div>
+        <div class="minipill"><span class="l">Financiamiento asegurado</span><span class="v">$ por definir</span></div>
+        <div class="minipill"><span class="l">En desarrollo</span><span class="v">$ por definir</span></div>
       </div>
     </div>
-  </section>
-
-  <!-- 17 · legado -->
-  <section class="slide sunset" data-num="17">
-    <div class="inner cols c2" style="gap:70px;align-items:center">
-      <div>
-        <div class="eyebrow fx">El legado</div>
-        <h2 class="fx">Lo que queda cuando<br><em>se apagan los proyectores</em></h2>
-        <p class="lead fx" style="font-size:15px">Más allá de las ocho noches, el proyecto deja activos permanentes para Santo Domingo.</p>
-      </div>
-      <div class="stag" style="margin-top:0">
-        <div class="fx"><span class="gnum">01</span><h3>Una marca para la comuna</h3><p>Roca Lights como cita anual — 2027, 2028… — un activo que crece cada verano y le pertenece a Santo Domingo.</p></div>
-        <div class="fx f2"><span class="gnum">02</span><h3>Patrimonio en el mapa</h3><p>Las rocas posicionadas como símbolo y atractivo del balneario, más allá del evento.</p></div>
-        <div class="fx f3"><span class="gnum">03</span><h3>Capacidad instalada</h3><p>Experiencia de producción, redes de artistas y aprendizajes que quedan en el territorio.</p></div>
-        <div class="fx f4"><span class="gnum">04</span><h3>Registro y memoria</h3><p>Material audiovisual y una historia que la comuna puede seguir contando todo el año.</p></div>
+    <div class="fx f5">
+      <p style="font-size:20px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(242,239,234,.65);margin-bottom:20px">El aporte permite fortalecer</p>
+      <div class="usepill">
+        <span>Producción artística</span><span>Mapping y tecnología</span><span>Infraestructura</span>
+        <span>Artista de cierre</span><span>Seguridad y operación</span><span>Campaña</span>
+        <span>Registro audiovisual</span><span>Experiencia de público</span>
       </div>
     </div>
-  </section>
+  </div>
+  <p class="kicker fx f6" style="margin-top:46px;font-size:31px">2027 puede ser el comienzo, <span style="color:var(--sand)">no el final de la alianza</span>.</p>
+</section>
 
-  <!-- 18 · próximos pasos -->
-  <section class="slide tintO" data-num="18">
-    <div class="inner">
-      <div class="eyebrow fx">Próximos pasos</div>
-      <h2 class="fx">De la idea <em>al encendido</em></h2>
-      <div class="road">
-        <div class="rstep fx"><span class="rnum" style="color:var(--sand)">01</span><h3>Mesa de trabajo</h3><p>Validar el concepto junto a la municipalidad y definir el alcance de una primera versión.</p></div>
-        <svg class="rarr" width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 l9 9 -9 9 M14 4 l9 9 -9 9" opacity=".55"/></svg>
-        <div class="rstep fx f2"><span class="rnum" style="color:var(--orange)">02</span><h3>Visita técnica</h3><p>Estudio del borde costero: puntos de proyección, factibilidad eléctrica y accesos.</p></div>
-        <svg class="rarr" width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 l9 9 -9 9 M14 4 l9 9 -9 9" opacity=".55"/></svg>
-        <div class="rstep fx f3"><span class="rnum" style="color:var(--pink)">03</span><h3>Financiamiento</h3><p>Alianzas con marcas y postulación a fondos de cultura y turismo.</p></div>
-        <svg class="rarr" width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4 l9 9 -9 9 M14 4 l9 9 -9 9" opacity=".55"/></svg>
-        <div class="rstep fx f4"><span class="rnum" style="color:var(--lila)">04</span><h3>Producción</h3><p>Convocatoria de artistas, desarrollo de contenidos y primera edición en febrero.</p></div>
-      </div>
-    </div>
-  </section>
+<!-- ══════════ 21 · CIERRE ══════════ -->
+<section class="slide" id="close" data-label="Cierre">
+  <img class="bgel" src="https://i.imgur.com/Ccq9B8B.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5">
+  <div class="shade" style="position:absolute;inset:0;background:radial-gradient(80% 90% at 50% 50%,rgba(11,14,36,.55),rgba(11,14,36,.93))"></div>
+  <div class="inner">
+    <img class="fx" src="https://i.imgur.com/STRghPA.png" alt="ROCALIGHTS" style="width:360px;margin-bottom:40px">
+    <p class="fx f2" style="font-size:42px;font-weight:400;line-height:1.35;text-wrap:pretty">Queremos que Mercado Pago sea parte del momento en que <b style="font-weight:600">ROCALIGHTS se encienda por primera vez</b>.</p>
+    <div class="gline fx f3" style="margin:40px auto"></div>
+    <p class="fx f3" style="font-size:30px;font-weight:300;color:rgba(242,239,234,.82)">Santo Domingo · 19 y 20 de febrero de 2027</p>
+    <p class="fx f4" style="margin-top:36px;font-size:54px;font-weight:800;letter-spacing:-.02em"><span class="grad">La costa se enciende.</span></p>
+  </div>
+  <div class="logobar">
+    <img class="prende" src="https://i.imgur.com/ZXJSjg2.png" alt="Estudio Prende" style="height:52px">
+    <div class="sep"></div>
+    <img class="mplogo" src="https://i.imgur.com/ZsMOsZd.png" alt="Mercado Pago" style="height:54px">
+  </div>
+</section>
 
-  <!-- 19 · cierre -->
-  <section class="slide" id="close">
-    <div class="inner">
-      <img class="logo fx" src="https://i.imgur.com/STRghPA.png" alt="Roca Lights">
-      <p class="lead fx" style="text-align:center;max-width:520px">Conversemos cómo encender la costa de Santo Domingo.</p>
-      <div class="gline fx"></div>
-    </div>
-    <div class="minilogos">
-      <img src="https://i.imgur.com/ZXJSjg2.png" alt="Estudio Prende">
-      <div class="sep"></div>
-      <img src="https://i.imgur.com/qvkYNCA.png" alt="Municipalidad de Santo Domingo">
-    </div>
-  </section>
+</div><!-- /track -->
+</div><!-- /stage -->
+</div><!-- /viewport -->
 
-</div>
-
-<div id="lb"><button class="x" aria-label="Cerrar">✕</button><img src="" alt=""></div>
-
-<div class="hint">← → para navegar</div>
+<div id="label"></div>
+<div id="dots"></div>
 <div id="ui">
-  <span id="counter">01 / 19</span>
-  <button class="arrow" id="prev" aria-label="Anterior">←</button>
-  <button class="arrow" id="next" aria-label="Siguiente">→</button>
+  <span id="counter">01 / 21</span>
+  <button class="arrow" id="prev" aria-label="Anterior">&#8249;</button>
+  <button class="arrow" id="next" aria-label="Siguiente">&#8250;</button>
 </div>
 
 <script>
-const deck=document.getElementById('deck');
+const stage=document.getElementById('stage');
+const track=document.getElementById('track');
 const slides=[...document.querySelectorAll('.slide')];
-const counter=document.getElementById('counter');
-const bar=document.getElementById('progress');
 const n=slides.length;
 let idx=0;
 
+function fit(){
+  const s=Math.min(window.innerWidth/1920,window.innerHeight/1080);
+  stage.style.transform='scale('+s+')';
+}
 function go(i){
   idx=Math.max(0,Math.min(n-1,i));
-  deck.scrollTo({left:idx*window.innerWidth,behavior:'smooth'});
+  track.style.transform='translateX('+(-idx*1920)+'px)';
+  slides.forEach((s,k)=>s.classList.toggle('act',k===idx));
+  document.getElementById('counter').textContent=String(idx+1).padStart(2,'0')+' / '+String(n).padStart(2,'0');
+  document.getElementById('progress').style.width=((idx+1)/n*100)+'%';
+  document.getElementById('label').textContent=slides[idx].dataset.label||'';
+  [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===idx));
 }
-function sync(){
-  idx=Math.round(deck.scrollLeft/window.innerWidth);
-  counter.textContent=String(idx+1).padStart(2,'0')+' / '+String(n).padStart(2,'0');
-  bar.style.width=((idx+1)/n*100)+'%';
-}
-deck.addEventListener('scroll',()=>requestAnimationFrame(sync));
+const dots=document.getElementById('dots');
+slides.forEach((s,k)=>{const i=document.createElement('i');i.onclick=()=>go(k);dots.appendChild(i)});
+
 document.getElementById('next').onclick=()=>go(idx+1);
 document.getElementById('prev').onclick=()=>go(idx-1);
 addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ')go(idx+1);
-  if(e.key==='ArrowLeft'||e.key==='PageUp')go(idx-1);
+  if(['ArrowRight','PageDown',' ','ArrowDown'].includes(e.key)){e.preventDefault();go(idx+1)}
+  if(['ArrowLeft','PageUp','ArrowUp'].includes(e.key)){e.preventDefault();go(idx-1)}
+  if(e.key==='Home')go(0); if(e.key==='End')go(n-1);
 });
-deck.addEventListener('wheel',e=>{
-  if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){
-    e.preventDefault();
-    if(Math.abs(e.deltaY)>18) go(idx+(e.deltaY>0?1:-1));
-  }
-},{passive:false});
-addEventListener('resize',()=>deck.scrollTo({left:idx*window.innerWidth}));
-
-/* entrance animations */
-const so=new IntersectionObserver(es=>es.forEach(e=>{
-  e.target.classList.toggle('act',e.isIntersecting);
-}),{root:deck,threshold:.55});
-slides.forEach(s=>so.observe(s));
-
-/* cambio de fondo en el recorrido */
-const expImgs=document.querySelectorAll('#exp .bgstack img');
-const expNodes=document.querySelectorAll('#exp [data-img]');
-expNodes.forEach(nd=>{
-  nd.addEventListener('mouseenter',()=>{
-    expImgs.forEach((im,k)=>im.classList.toggle('on',String(k)===nd.dataset.img));
-    expNodes.forEach(o=>o.classList.toggle('cur',o===nd));
-  });
-});
-
-/* lightbox renders */
-const lb=document.getElementById('lb'),lbImg=lb.querySelector('img');
-document.querySelectorAll('.renders img').forEach(im=>{
-  im.parentElement.addEventListener('click',()=>{lbImg.src=im.src;lb.classList.add('on')});
-});
-lb.addEventListener('click',()=>lb.classList.remove('on'));
-addEventListener('keydown',e=>{if(e.key==='Escape')lb.classList.remove('on')});
-
-/* rotador de conceptos */
-const words=[
-  "un recorrido costero","una activación turística","un circuito nocturno",
-  "un panorama familiar","una intervención lumínica","un atractivo de verano",
-  "una experiencia segura y gratuita"
-];
-const rota=document.getElementById('rota');
-let wi=0;
-setInterval(()=>{
-  rota.style.opacity=0;rota.style.transform='translateY(8px)';
-  setTimeout(()=>{
-    wi=(wi+1)%words.length;
-    rota.textContent=words[wi];
-    rota.style.opacity=1;rota.style.transform='none';
-  },400);
-},2800);
-
-sync();
+let lock=false;
+addEventListener('wheel',e=>{
+  if(lock)return;
+  const d=Math.abs(e.deltaY)>Math.abs(e.deltaX)?e.deltaY:e.deltaX;
+  if(Math.abs(d)<18)return;
+  lock=true;setTimeout(()=>lock=false,820);
+  go(idx+(d>0?1:-1));
+},{passive:true});
+let tx=null;
+addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{
+  if(tx===null)return;
+  const dx=e.changedTouches[0].clientX-tx;
+  if(Math.abs(dx)>60)go(idx+(dx<0?1:-1));
+  tx=null;
+},{passive:true});
+addEventListener('resize',fit);
+fit();go(0);
 </script>
 </body>
 </html>
